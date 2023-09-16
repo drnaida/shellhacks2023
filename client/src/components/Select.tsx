@@ -7,8 +7,8 @@ declare interface SelectProps extends React.DetailedHTMLProps<SelectHTMLAttribut
 export const Select = forwardRef(({ children, className, ...props }: SelectProps, ref: React.LegacyRef<HTMLSelectElement>) => {
   const componentClasses = classNames(
     'rounded-md w-full p-2.5',
-    'border border-slate-300 dark:border-slate-800',
-    'bg-slate-50 text-slate-900 dark:bg-slate-600 dark:text-slate-100 bg-opacity-80 hover:bg-opacity-100',
+    'border border-slate-300',
+    'bg-slate-50 text-darkGray bg-opacity-80 hover:bg-opacity-100',
     'text-sm',
     className,
   );

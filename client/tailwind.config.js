@@ -17,7 +17,7 @@ module.exports = {
         primary: '#654FD3',
         secondary: '#FFC5A0',
         tertiary: '#DFDDE5',
-        black: '#393647'
+        darkGray: '#393647'
       },
       boxShadow: {
         'custom': '15px 22px 35px 6px rgba(0,0,0,0.07)',
@@ -31,10 +31,6 @@ module.exports = {
           '0%': { opacity: 0 },
           '100%': { opacity: 1 }
         }
-      },
-      backgroundImage: {
-        landingBanner: "linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(39, 39, 42,0.9)), url('./assets/banner.png')",
-        landingBannerDark: "linear-gradient(to bottom, rgba(1,1,1,0.3), rgba(51, 65, 85,0.9)), url('./assets/banner.png')",
       },
     },
   },

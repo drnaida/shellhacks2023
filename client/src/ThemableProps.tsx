@@ -18,13 +18,13 @@ const primaryTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-primary text-white';
+    const _Classes = 'bg-primary text-tertiary';
     return _Classes;
   }
 }
 const secondaryTheme: Theme = {
   getText() {
-    const _Classes = 'black';
+    const _Classes = 'text-darkGray';
     return _Classes;
   },
   getBackground() {
@@ -32,7 +32,7 @@ const secondaryTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-secondary black';
+    const _Classes = 'bg-secondary text-darkGray';
     return _Classes;
   }
 }
@@ -47,7 +47,7 @@ const dangerTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-red-700 text-white';
+    const _Classes = 'bg-red-700 text-tertiary';
     return _Classes;
   }
 };
@@ -61,7 +61,7 @@ const warningTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-amber-700 text-white';
+    const _Classes = 'bg-amber-700 text-tertiary';
     return _Classes
   }
 };
@@ -75,18 +75,18 @@ const infoTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-blue-700 text-white';
+    const _Classes = 'bg-blue-700 text-tertiary';
     return _Classes;
   }
 };
 const navTheme: Theme = {
   getText() {
-    return 'text-white !underline hover:!decoration-primary';
+    return 'text-tertiary !underline hover:!decoration-primary';
   },
   getBackground() {
     return '';
   },
-  getButton() { return 'text-white bg-slate-200 bg-opacity-20 hover:bg-opacity-30'; }
+  getButton() { return 'text-tertiary bg-slate-200 bg-opacity-20 hover:bg-opacity-30'; }
 }
 const noneTheme: Theme = {
   getText() {
