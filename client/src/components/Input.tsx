@@ -13,10 +13,10 @@ export const Input = forwardRef(({ children, className, textSize, widthClasses, 
   const componentClasses = classNames(
     'rounded-md',
     widthClasses,
-    'border border-slate-300 dark:border-slate-800',
-    'bg-slate-50 text-slate-900 dark:bg-slate-600 dark:text-slate-100',
+    'border border-slate-300',
+    'bg-slate-50 text-darkGray',
     `text-${textSize}`,
-    'disabled:cursor-not-allowed disabled:bg-slate-200 disabled:dark:bg-slate-500',
+    'disabled:cursor-not-allowed disabled:bg-slate-200',
     className,
   );
 

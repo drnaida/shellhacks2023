@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from 'react-dom/client';
 import { Toaster } from "react-hot-toast";
 import { Navigate, Route, RouterProvider, createHashRouter, createRoutesFromElements } from "react-router-dom";
-import { PageWrapper } from "./components/CommonComponents";
+import { PageWrapper } from "./components/PageWrapper";
 import { EditExam } from "./pages/EditExam";
 import { Exams } from "./pages/Exams";
 import { GenerateExam } from "./pages/GenerateExam";
@@ -26,7 +26,7 @@ const container = document.getElementById('app')!;
 const root = createRoot(container);
 
 let tree = (
-  <div className="dark:bg-texture-dark bg-texture text-slate-800 dark:text-slate-100 min-h-screen">
+  <div className="bg-tertiary text-darkGray min-h-screen flex flex-col">
     <Toaster />
     <RouterProvider router={router} />
   </div>
