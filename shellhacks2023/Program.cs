@@ -30,6 +30,12 @@ builder.Services.AddSingleton<OpenAIService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableDetailedErrors();
+        options.EnableSensitiveDataLogging();
+    }
+
     var connStringBuilder = new NpgsqlConnectionStringBuilder();
     connStringBuilder.SslMode = SslMode.VerifyFull;
 
@@ -53,12 +59,6 @@ builder.Services.AddDbContext<DataContext>(options =>
     connStringBuilder.Database = "shellhacks2023";
 
     options.UseNpgsql(connStringBuilder.ConnectionString);
-
-    if (builder.Environment.IsDevelopment())
-    {
-        options.EnableDetailedErrors();
-        options.EnableSensitiveDataLogging();
-    }
 });
 
 var app = builder.Build();

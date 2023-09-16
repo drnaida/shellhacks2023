@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using shellhacks2023.Data;
@@ -12,9 +13,11 @@ using shellhacks2023.Data;
 namespace shellhacks2023.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230916192221_Exam_Modification")]
+    partial class Exam_Modification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,17 +102,12 @@ namespace shellhacks2023.Migrations
             modelBuilder.Entity("shellhacks2023.Data.Question", b =>
                 {
                     b.HasOne("shellhacks2023.Data.Exam", "Exam")
-                        .WithMany("Questions")
+                        .WithMany()
                         .HasForeignKey("ExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Exam");
-                });
-
-            modelBuilder.Entity("shellhacks2023.Data.Exam", b =>
-                {
-                    b.Navigation("Questions");
                 });
 #pragma warning restore 612, 618
         }
