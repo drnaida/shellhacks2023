@@ -16,9 +16,15 @@ export function GenerateExam(): JSX.Element {
         <PageHeading>
           Create Exam
         </PageHeading>
-        <h2 className="text-2xl font-bold text-primary mb-2 mt-2">Part 1. Add keywords.</h2>
+        <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 1. Add keywords.</h2>
         <p className="mt-2 mb-4">
-          Please use the list below to edit or view as a student your exams.
+          <div className="mb-2">
+            Please use the form below to enter your exam name, number of questions that you need, and Exam topics.
+          </div>
+          <div>
+            For example, if you are creating a physics exam, you could write "Photoelectric effect relation with the ultraviolet catastrophe" as one of the
+            exams topics, press "Add Exam Topic" button, and then write "Newton's First Law of Motion" as another exam topic and press "Add Exam Topic" button.
+          </div>
         </p>
         <CreatExamForm />
       </Container>
@@ -40,6 +46,12 @@ function CreatExamForm(): JSX.Element {
 
   const onSubmit = async (values: typeof initialValues) => {
     setSubmitting(true);
+    const data = {
+      examName: values.examName,
+      questionsNumber: values.questionsNumber,
+      keywords: keyStatements
+    }
+    console.log(data);
 
     //TODO: code that sends the keywords to backend
 
@@ -57,27 +69,34 @@ function CreatExamForm(): JSX.Element {
             <TextField placeholder="Microbiology Midterm 1" name="name" label="Exam name" />
             <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
             <div className="flex flex-row justify-between">
-              <div className="w-4/6">
-                <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Key Statements" />
+              <div className="w-4/6 mr-3">
+                <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Exam Topics (one topic at a time)" />
               </div>
-              <div className="w-2/6 flex flex-row justify-end items-end mb-[5px]">
-                <Button type="button" theme={Themes.Secondary} className="flex items-center" disabled={submitting} onClick={(() => {
+              <div className="w-2/6 flex flex-row justify-start items-end">
+                <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" disabled={values.keywords == ''} onClick={(() => {
                   setKeyStatements([
                     ...keyStatements,
                     values.keywords
                   ]);
                   values.keywords = '';
-                })}><PlusLg className="ml-2 h-4 w-4" /><span>Add Key Statement</span></Button>
+                })}><PlusLg className="ml-2 h-4 w-4" /><span>Add Exam Topic</span></Button>
               </div>
             </div>
           </div>
-          <div className="flex flex-row flex-wrap">
+          <div className="flex flex-row flex-wrap mb-3">
             {keyStatements.map((keyStatement) => <div className={`w-fit rounded-md p-2 mb-3 text-white bg-primary text-sm font-bold flex items-center mr-3`}>
-              <span>{keyStatement}</span> <TrashFill className="ml-2 h-4 w-4" />
+              <span>{keyStatement}</span>
+              <button type="button" onClick={() => {
+                let currentArray = keyStatements;
+                currentArray = currentArray.filter((keyword) => keyword != keyStatement);
+                setKeyStatements(currentArray);
+              }}>
+                <TrashFill className="ml-2 h-4 w-4" />
+              </button>
             </div>)}
           </div>
           <div className="flex flex-row justify-center">
-            <Button type="submit" theme={Themes.Primary} disabled={submitting}>Submit</Button>
+            <Button type="submit" theme={Themes.Primary} disabled={submitting || keyStatements.length == 0}>Submit</Button>
           </div>
         </Form>
       )}
