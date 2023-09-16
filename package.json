@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@types/luxon": "^3.0.2",
+    "nswag": "^13.18.1"
+  },
+  "scripts": {
+    "i": "yarn && cd client && yarn"
+  }
+}
