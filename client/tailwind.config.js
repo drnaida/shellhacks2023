@@ -14,21 +14,10 @@ module.exports = {
         pulseFive: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) 5'
       },
       colors: {
-        slate: colors.zinc,
-        usfGreen: '#006747',
-        usfGold: '#CFC493',
-        usfEvergreen: '#005432',
-        usfSand: '#EDEBD1',
-        usfLemongrass: '#DBE442',
-        usfApple: '#9CCB3B',
-        usfTeal: '#009374',
-        usfTealSoft: '#327052',
-        usfSeaglass: '#80B0A6',
-        usfStorm: '#006484',
-        usfSilver: '#CAD2D8',
-        usfGray: '#7E96A0',
-        usfLightGrey: "#eceff1",
-        usfSlate: '#466069',
+        primary: '#654FD3',
+        secondary: '#FFC5A0',
+        tertiary: '#DFDDE5',
+        black: '#393647'
       },
       fontFamily: {
         'sans-serif': ['Open Sans', 'arial'],
@@ -50,6 +39,6 @@ module.exports = {
     require('@tailwindcss/typography')
   ],
   safelist: [{
-    pattern: /(bg|text|border)-usf(Green|Gold|Evergreen|Sand|Lemongrass|Apple|Teal|Seaglass|Storm|Silver|Gray|Slate)/
+    pattern: /(bg|text|border)-(primary|secondary|tertiary|black)/
   }]
 }
