@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="CData.CockroachDB.EntityFrameworkCore" Version="23.0.8565" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.22" />
     <PackageReference Include="OpenAI" Version="1.7.2" />
 	  <PackageReference Include="NSwag.AspNetCore" Version="13.20.0" />
       <PackageReference Include="NSwag.MSBuild" Version="13.20.0">
