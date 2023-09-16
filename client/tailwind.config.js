@@ -19,6 +19,9 @@ module.exports = {
         tertiary: '#DFDDE5',
         black: '#393647'
       },
+      boxShadow: {
+        'custom': '15px 22px 35px 6px rgba(0,0,0,0.07)',
+      },
       fontFamily: {
         'sans-serif': ['Open Sans', 'arial'],
         'barlow': ['Barlow Condensed', 'arial'],
