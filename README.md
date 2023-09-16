@@ -2,7 +2,7 @@
 
 Project to revolutionize educational examinations. 📝 😄
 
-## Formating Git
+## Formating Git 🙀
 
 ### For branches:
 
@@ -32,3 +32,12 @@ Types of changes:
 
     - {Bullet points of what was done}
 
+## Updating Database 💾
+
+Once data context has been modified, open a terminal on the root of the project and run the following:
+
+    > dotnet ef migrations add {descriptive short name for changes}
+
+If the above succeed then run
+
+    > dotnet ef database update
