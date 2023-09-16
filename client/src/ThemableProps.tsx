@@ -32,7 +32,7 @@ const secondaryTheme: Theme = {
     return _Classes;
   },
   getButton() {
-    const _Classes = 'bg-secondary text-darkGray';
+    const _Classes = 'bg-secondary !text-darkGray';
     return _Classes;
   }
 }

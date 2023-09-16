@@ -9,28 +9,30 @@ export function Footer(): JSX.Element {
   const rowClasses = classnames('w-full flex items-center justify-center mb-2');
 
   return (
-    <footer className="flex flex-col items-center mt-auto">
-      <div className={rowClasses}>
-        <p className="text-darkGray text-center">
-          This application was developed by<br />
-          Timur Kalandarov, Anzhelika Kurnikova, and Alvaro Lazaro Aguilar<br />
-          for the ShellHacks 2023 hackathon.
-        </p>
-      </div>
+    <footer className="mt-auto">
+      <div className="flex flex-col items-center mt-10">
+        <div className={rowClasses}>
+          <p className="text-darkGray text-center">
+            This application was developed by<br />
+            <b>Timur Kalandarov</b>, <b>Anzhelika Kurnikova</b>, and <b>Alvaro Lazaro Aguilar</b><br />
+            for the ShellHacks 2023 hackathon.
+          </p>
+        </div>
 
-      <div className={rowClasses}>
-        <Link to='https://github.com/drnaida/shellhacks2023' isAbsoluteUrl external target="_blank">
-          <Button theme={Themes.Default} className="opacity-50 hover:opacity-100">
-            <Github className={iconClasses} />
-            <span className="ml-1">GitHub</span>
-          </Button>
-        </Link>
-        <Link to='https://www.shellhacks.net/' isAbsoluteUrl external target="_blank">
-          <Button theme={Themes.Default} className="opacity-50 hover:opacity-100">
-            <CodeSlash className={iconClasses} />
-            <span className="ml-1">ShellHacks</span>
-          </Button>
-        </Link>
+        <div className={rowClasses}>
+          <Link to='https://github.com/drnaida/shellhacks2023' isAbsoluteUrl external target="_blank">
+            <Button theme={Themes.Default}>
+              <Github className={iconClasses} />
+              <span className="ml-1">GitHub</span>
+            </Button>
+          </Link>
+          <Link to='https://www.shellhacks.net/' isAbsoluteUrl external target="_blank">
+            <Button theme={Themes.Default}>
+              <CodeSlash className={iconClasses} />
+              <span className="ml-1">ShellHacks</span>
+            </Button>
+          </Link>
+        </div>
       </div>
     </footer>
   )
