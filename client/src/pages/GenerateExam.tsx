@@ -1,6 +1,6 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import { PlusLg } from "react-bootstrap-icons";
+import { PlusLg, TrashFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -17,7 +17,7 @@ export function GenerateExam(): JSX.Element {
           Create Exam
         </PageHeading>
         <h2 className="text-2xl font-bold text-primary mb-2 mt-2">Part 1. Add keywords.</h2>
-        <p className="mt-2 mb-5">
+        <p className="mt-2 mb-4">
           Please use the list below to edit or view as a student your exams.
         </p>
         <CreatExamForm />
@@ -61,19 +61,19 @@ function CreatExamForm(): JSX.Element {
                 <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Key Statements" />
               </div>
               <div className="w-2/6 flex flex-row justify-end items-end mb-[5px]">
-                <Button type="button" theme={Themes.Secondary} disabled={submitting} onClick={(() => {
+                <Button type="button" theme={Themes.Secondary} className="flex items-center" disabled={submitting} onClick={(() => {
                   setKeyStatements([
                     ...keyStatements,
                     values.keywords
                   ]);
                   values.keywords = '';
-                })}><PlusLg /><span>Add Key Statement</span></Button>
+                })}><PlusLg className="ml-2 h-4 w-4" /><span>Add Key Statement</span></Button>
               </div>
             </div>
           </div>
-          <div>
-            {keyStatements.map((keyStatement) => <div className={`w-fit rounded-md p-2 mb-3 text-white bg-primary text-sm font-bold`}>
-              {keyStatement}
+          <div className="flex flex-row flex-wrap">
+            {keyStatements.map((keyStatement) => <div className={`w-fit rounded-md p-2 mb-3 text-white bg-primary text-sm font-bold flex items-center mr-3`}>
+              <span>{keyStatement}</span> <TrashFill className="ml-2 h-4 w-4" />
             </div>)}
           </div>
           <div className="flex flex-row justify-center">
