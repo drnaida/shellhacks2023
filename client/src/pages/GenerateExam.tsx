@@ -66,7 +66,7 @@ function CreatExamForm(): JSX.Element {
       {({ values }) => (
         <Form>
           <div className="p-2">
-            <TextField placeholder="Microbiology Midterm 1" name="name" label="Exam name" />
+            <TextField placeholder="Microbiology Midterm 1" name="examName" label="Exam name" />
             <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
             <div className="flex flex-row justify-between">
               <div className="w-4/6 mr-3">
