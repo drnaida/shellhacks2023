@@ -1,0 +1,20 @@
+{
+  "tailwindCSS.experimental.classRegex": [
+    [
+      "Classes \\=([^;]*);",
+      "'([^']*)'"
+    ],
+    [
+      "Classes \\=([^;]*);",
+      "\"([^\"]*)\""
+    ],
+    [
+      "Classes \\=([^;]*);",
+      "\\`([^\\`]*)\\`"
+    ]
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+}
