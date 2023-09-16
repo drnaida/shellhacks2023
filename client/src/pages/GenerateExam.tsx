@@ -4,6 +4,7 @@ import { PlusLg, TrashFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
+import { Card } from "../components/Card";
 import { Container } from "../components/Container";
 import { NumericField } from "../components/NumericField";
 import { PageHeading } from "../components/PageHeading";
@@ -66,22 +67,28 @@ function CreatExamForm(): JSX.Element {
       {({ values }) => (
         <Form>
           <div className="p-2">
-            <TextField placeholder="Microbiology Midterm 1" name="examName" label="Exam name" />
-            <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
-            <div className="flex flex-row justify-between">
-              <div className="w-4/6 mr-3">
-                <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Exam Topics (one topic at a time)" />
+            <Card className="mb-3 hover:shadow-xl">
+              <TextField placeholder="Microbiology Midterm 1" name="examName" label="Exam name" />
+            </Card>
+            <Card className="mb-3 hover:shadow-xl">
+              <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
+            </Card>
+            <Card className="mb-3 hover:shadow-xl">
+              <div className="flex flex-row justify-between">
+                <div className="w-4/6 mr-3">
+                  <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Exam Topics (one topic at a time)" />
+                </div>
+                <div className="w-2/6 flex flex-row justify-start items-end">
+                  <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" disabled={values.keywords == ''} onClick={(() => {
+                    setKeyStatements([
+                      ...keyStatements,
+                      values.keywords
+                    ]);
+                    values.keywords = '';
+                  })}><PlusLg className="ml-2 h-4 w-4" /><span>Add Exam Topic</span></Button>
+                </div>
               </div>
-              <div className="w-2/6 flex flex-row justify-start items-end">
-                <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" disabled={values.keywords == ''} onClick={(() => {
-                  setKeyStatements([
-                    ...keyStatements,
-                    values.keywords
-                  ]);
-                  values.keywords = '';
-                })}><PlusLg className="ml-2 h-4 w-4" /><span>Add Exam Topic</span></Button>
-              </div>
-            </div>
+            </Card>
           </div>
           <div className="flex flex-row flex-wrap mb-3">
             {keyStatements.map((keyStatement) => <div className={`w-fit rounded-md p-2 mb-3 text-white bg-primary text-sm font-bold flex items-center mr-3`}>
