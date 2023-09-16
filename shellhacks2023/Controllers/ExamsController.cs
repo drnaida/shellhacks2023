@@ -45,10 +45,15 @@ namespace shellhacks2023.Controllers
     [Route("QuestionsFromExam")]
     public async Task<IActionResult> AllExamQuestions(Guid examId)
     {
+            var exam = await db.Exams
+                .Where(e => e.Id == examId)
+                .FirstOrDefaultAsync();
+            var exam_name = exam.Title;
             var questions = await db.Questions
                 .Where(q => q.ExamId == examId)
                 .ToListAsync();
-            return Ok(questions);
+            var data = new { exam_name, questions };
+            return Ok(data);
     }
 
     [HttpPost]
