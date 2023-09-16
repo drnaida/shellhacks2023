@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using OpenAI_API;
 using shellhacks2023.Data;
 using shellhacks2023.Services;
@@ -29,7 +30,30 @@ builder.Services.AddSingleton<OpenAIService>();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseCockroachDB(builder.Configuration.GetConnectionString("CockroachDB"));
+    var connStringBuilder = new NpgsqlConnectionStringBuilder();
+    connStringBuilder.SslMode = SslMode.VerifyFull;
+
+    string? databaseUrlEnv=builder.Configuration.GetConnectionString("CockroachDB");
+    if (databaseUrlEnv == null)
+    {
+        connStringBuilder.Host = "localhost";
+        connStringBuilder.Port = 26257;
+        connStringBuilder.Username = "{username}";
+        connStringBuilder.Password = "{password}";
+    }
+    else
+    {
+        Uri databaseUrl = new Uri(databaseUrlEnv);
+        connStringBuilder.Host = databaseUrl.Host;
+        connStringBuilder.Port = databaseUrl.Port;
+        var items = databaseUrl.UserInfo.Split(new[] { ':' });
+        if (items.Length > 0) connStringBuilder.Username = items[0];
+        if (items.Length > 1) connStringBuilder.Password = items[1];
+    }
+    connStringBuilder.Database = "shellhacks2023";
+
+    options.UseNpgsql(connStringBuilder.ConnectionString);
+
     if (builder.Environment.IsDevelopment())
     {
         options.EnableDetailedErrors();
