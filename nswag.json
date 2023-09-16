@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
-      "project": "shelljacks2023/shelljacks2023.csproj",
+      "project": "shellhacks2023/shellhacks2023.csproj",
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
       "runtime": null,

@@ -6,25 +6,39 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Set up CORS policy
+const string CorsPolicyParcel = "_allowParcelDevServer";
+builder.Services.AddCors(options =>
+{
+    if (builder.Environment.IsDevelopment())
+    {
+        options.AddPolicy(CorsPolicyParcel, policy =>
+        {
+            policy.WithOrigins("https://localhost:1234")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    }
+});
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddOpenApiDocument();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<OpenAIService>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseHsts();
+}
+else
+{
+    app.UseCors(CorsPolicyParcel);
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
+app.UseOpenApi();
 app.MapControllers();
-
 app.Run();
