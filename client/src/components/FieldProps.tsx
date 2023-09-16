@@ -17,6 +17,11 @@ export declare interface TextFieldProps extends FieldProps {
   textSize?: 'sm' | 'md' | 'lg';
 }
 
+export declare interface TextAreaProps extends FieldProps {
+  rows?: number;
+  maxLength?: number;
+}
+
 export declare interface NumericFieldProps extends FieldProps {
   max?: number;
   min?: number;
