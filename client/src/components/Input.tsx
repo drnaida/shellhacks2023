@@ -16,6 +16,7 @@ export const Input = forwardRef(({ children, className, textSize, widthClasses, 
     'border border-slate-300',
     'bg-slate-50 text-darkGray',
     `text-${textSize}`,
+    'focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
     'disabled:cursor-not-allowed disabled:bg-slate-200',
     className,
   );

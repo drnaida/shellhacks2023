@@ -20,35 +20,69 @@ export class Client {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    promptEngineering_TestQuestionGeneration(topics: string[] | undefined, q_number: number | undefined, model: string | undefined): Promise<FileResponse> {
-        let url_ = this.baseUrl + "/TestQuestionGeneration?";
-        if (topics === null)
-            throw new Error("The parameter 'topics' cannot be null.");
-        else if (topics !== undefined)
-            topics && topics.forEach(item => { url_ += "topics=" + encodeURIComponent("" + item) + "&"; });
-        if (q_number === null)
-            throw new Error("The parameter 'q_number' cannot be null.");
-        else if (q_number !== undefined)
-            url_ += "q_number=" + encodeURIComponent("" + q_number) + "&";
-        if (model === null)
-            throw new Error("The parameter 'model' cannot be null.");
-        else if (model !== undefined)
-            url_ += "model=" + encodeURIComponent("" + model) + "&";
+    promptEngineering_BatchQuestionGeneration(requestData: QuestionBatchRequest): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/PromptEngineering/BatchQuestionGeneration";
         url_ = url_.replace(/[?&]$/, "");
 
+        const content_ = JSON.stringify(requestData);
+
         let options_: RequestInit = {
-            method: "GET",
+            body: content_,
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 "Accept": "application/octet-stream"
             }
         };
 
         return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processPromptEngineering_TestQuestionGeneration(_response);
+            return this.processPromptEngineering_BatchQuestionGeneration(_response);
         });
     }
 
-    protected processPromptEngineering_TestQuestionGeneration(response: Response): Promise<FileResponse> {
+    protected processPromptEngineering_BatchQuestionGeneration(response: Response): Promise<FileResponse> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200 || status === 206) {
+            const contentDisposition = response.headers ? response.headers.get("content-disposition") : undefined;
+            let fileNameMatch = contentDisposition ? /filename\*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/g.exec(contentDisposition) : undefined;
+            let fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[3] || fileNameMatch[2] : undefined;
+            if (fileName) {
+                fileName = decodeURIComponent(fileName);
+            } else {
+                fileNameMatch = contentDisposition ? /filename="?([^"]*?)"?(;|$)/g.exec(contentDisposition) : undefined;
+                fileName = fileNameMatch && fileNameMatch.length > 1 ? fileNameMatch[1] : undefined;
+            }
+            return response.blob().then(blob => { return { fileName: fileName, data: blob, status: status, headers: _headers }; });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<FileResponse>(null as any);
+    }
+
+    promptEngineering_SingleQuestionGeneration(requestData: QuestionSingleRequest): Promise<FileResponse> {
+        let url_ = this.baseUrl + "/api/PromptEngineering/SingleQuestionGeneration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(requestData);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/octet-stream"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processPromptEngineering_SingleQuestionGeneration(_response);
+        });
+    }
+
+    protected processPromptEngineering_SingleQuestionGeneration(response: Response): Promise<FileResponse> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200 || status === 206) {
@@ -157,6 +191,110 @@ export class Client {
         }
         return Promise.resolve<FileResponse>(null as any);
     }
+}
+
+export class QuestionBatchRequest implements IQuestionBatchRequest {
+    topics?: string[];
+    qNumber?: number;
+    model?: string;
+
+    constructor(data?: IQuestionBatchRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["topics"])) {
+                this.topics = [] as any;
+                for (let item of _data["topics"])
+                    this.topics!.push(item);
+            }
+            this.qNumber = _data["qNumber"];
+            this.model = _data["model"];
+        }
+    }
+
+    static fromJS(data: any): QuestionBatchRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new QuestionBatchRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.topics)) {
+            data["topics"] = [];
+            for (let item of this.topics)
+                data["topics"].push(item);
+        }
+        data["qNumber"] = this.qNumber;
+        data["model"] = this.model;
+        return data;
+    }
+}
+
+export interface IQuestionBatchRequest {
+    topics?: string[];
+    qNumber?: number;
+    model?: string;
+}
+
+export class QuestionSingleRequest implements IQuestionSingleRequest {
+    topics?: string[];
+    question?: string;
+    model?: string;
+
+    constructor(data?: IQuestionSingleRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["topics"])) {
+                this.topics = [] as any;
+                for (let item of _data["topics"])
+                    this.topics!.push(item);
+            }
+            this.question = _data["question"];
+            this.model = _data["model"];
+        }
+    }
+
+    static fromJS(data: any): QuestionSingleRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new QuestionSingleRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.topics)) {
+            data["topics"] = [];
+            for (let item of this.topics)
+                data["topics"].push(item);
+        }
+        data["question"] = this.question;
+        data["model"] = this.model;
+        return data;
+    }
+}
+
+export interface IQuestionSingleRequest {
+    topics?: string[];
+    question?: string;
+    model?: string;
 }
 
 export interface FileResponse {

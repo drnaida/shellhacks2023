@@ -36,7 +36,6 @@ export function Exams(): JSX.Element {
   ];
 
   return (
-    <>
       <Container width="narrow" className="animate-fade">
         <PageHeading>
           Your Exams
@@ -49,8 +48,7 @@ export function Exams(): JSX.Element {
             <ExamCard name={exam.name} id={exam.id} />
           ))}
         </div>
-      </Container>
-    </>
+    </Container>
   )
 }
 
