@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI_API;
+using shellhacks2023.Data;
 using shellhacks2023.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +26,16 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton<OpenAIService>();
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseCockroachDB(builder.Configuration.GetConnectionString("CockroachDB"));
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableDetailedErrors();
+        options.EnableSensitiveDataLogging();
+    }
+});
 
 var app = builder.Build();
 
