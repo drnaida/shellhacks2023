@@ -17,5 +17,6 @@ namespace shellhacks2023.Data
         public Guid OwnerId { get; set; }
 
         public List<Question> Questions { get; set; } = default!;
+        public List<string> Topics { get; set; } = default!;
     }
 }

@@ -20,9 +20,10 @@ Project to revolutionize educational examinations. 📝 😄
 
 Types of changes:
 
-- *feat* -> add a new feature
-- *refactor* -> change something not visible for users
-- *fix* -> fixed something that already existed
+- `feat` -> add a new feature
+- `refactor` -> change something not visible for users
+- `fix` -> fixed something that already existed
+- `infra` -> Infrastructure setups
 
 ### Pull requests template:
 
