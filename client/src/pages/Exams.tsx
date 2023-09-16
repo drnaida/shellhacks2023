@@ -1,4 +1,4 @@
-import { EyeFill, PencilFill } from "react-bootstrap-icons";
+import { EyeFill, PencilFill, PlusCircleFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -34,6 +34,7 @@ export function Exams(): JSX.Element {
       id: '12345679'
     },
   ];
+  const navigate = useNavigate();
 
   return (
     <>
@@ -41,9 +42,15 @@ export function Exams(): JSX.Element {
         <PageHeading>
           Your Exams
         </PageHeading>
-        <p className="mt-2 mb-5">
-          Please use the list below to edit or view as a student your exams.
-        </p>
+        <div className="mt-2 mb-6 flex flex-row justify-between w-full">
+          <p>
+            Please use the list below to create, edit or preview as a student your exams.
+          </p>
+          <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/CreateExam`)}>
+            <PlusCircleFill className="h-4 w-4 mr-2" /><span>New Exam</span>
+          </Button>
+        </div>
+
         <div>
           {exams.map((exam) => (
             <ExamCard name={exam.name} id={exam.id} />
