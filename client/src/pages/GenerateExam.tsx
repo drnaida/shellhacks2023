@@ -1,5 +1,6 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
+import { PlusLg } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -29,11 +30,12 @@ export function GenerateExam(): JSX.Element {
 function CreatExamForm(): JSX.Element {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const [keyStatements, setKeyStatements] = useState<string[]>([]);
 
   const initialValues = {
     examName: '',
     questionsNumber: '',
-    keywords: []
+    keywords: ''
   }
 
   const onSubmit = async (values: typeof initialValues) => {
@@ -49,15 +51,36 @@ function CreatExamForm(): JSX.Element {
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit} enableReinitialize>
-      <Form>
-        <div className="p-2">
-          <TextField placeholder="Microbiology Midterm 1" name="name" label="Exam name" />
-          <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
-        </div>
-        <div className="flex flex-row justify-center">
-          <Button type="submit" theme={Themes.Primary} disabled={submitting}>Submit</Button>
-        </div>
-      </Form>
+      {({ values }) => (
+        <Form>
+          <div className="p-2">
+            <TextField placeholder="Microbiology Midterm 1" name="name" label="Exam name" />
+            <NumericField name="questionsNumber" label="Number of Questions to generate" min={0} max={30} step={1} placeholder="30" />
+            <div className="flex flex-row justify-between">
+              <div className="w-4/6">
+                <TextField placeholder="Photoelectric effect relation with the ultraviolet catastrophe" name="keywords" label="Add Key Statements" />
+              </div>
+              <div className="w-2/6 flex flex-row justify-end items-end mb-[5px]">
+                <Button type="button" theme={Themes.Secondary} disabled={submitting} onClick={(() => {
+                  setKeyStatements([
+                    ...keyStatements,
+                    values.keywords
+                  ]);
+                  values.keywords = '';
+                })}><PlusLg /><span>Add Key Statement</span></Button>
+              </div>
+            </div>
+          </div>
+          <div>
+            {keyStatements.map((keyStatement) => <div className={`w-fit rounded-md p-2 mb-3 text-white bg-primary text-sm font-bold`}>
+              {keyStatement}
+            </div>)}
+          </div>
+          <div className="flex flex-row justify-center">
+            <Button type="submit" theme={Themes.Primary} disabled={submitting}>Submit</Button>
+          </div>
+        </Form>
+      )}
     </Formik>
   )
 }
