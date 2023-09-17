@@ -4,7 +4,9 @@ Project to revolutionize educational examinations. 📝 😄
 
 ## Technologies
 Backend: C#, ASP.Net, CockRoachDB
-Frontend: TypeScript, JavaScript, React.js, Tailwind, 
+
+Frontend: TypeScript, JavaScript, React.js, Tailwind
+
 Infrastructure: Docker
 
 ## Formating Git 🙀
@@ -63,11 +65,11 @@ If the above succeed then run
 
 1. Install prerequirements from the root of repository:
 
-    yarn run i
+    `yarn run i`
 
 2. Run code locally:
     
-    yarn start-local --no-cache
+    `yarn start-local --no-cache`
 
 ### Local Development Backend
 
@@ -75,7 +77,7 @@ If the above succeed then run
 
 2. To describe the structure of API for Frontend (while local server in Visual Studio is turned off):
 
-    yarn run nswag run /runtime:Net60
+    `yarn run nswag run /runtime:Net60`
 
 ## How to deploy 🚀
 
