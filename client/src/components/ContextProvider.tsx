@@ -4,7 +4,7 @@ import { Client, User } from '../api/client';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
-const devBaseUrl = 'https://localhost:7183';
+const devBaseUrl = "https://shellhacks2023-production.up.railway.app";//'https://localhost:7183';
 
 export declare interface AuthContextState {
   client: Client | undefined;

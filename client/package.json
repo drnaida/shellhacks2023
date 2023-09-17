@@ -8,7 +8,8 @@
     "i": "yarn && cd ../ && yarn",
     "start-local": "cross-env NODE_ENV=local+api parcel --https --port 1234",
     "start": "cross-env NODE_ENV=local parcel --https --port 1234",
-    "clean-dist": "rimraf dist"
+    "clean-dist": "rimraf dist",
+    "build-prod": "yarn clean-dist && cross-env NODE_ENV=production parcel build"
   },
   "dependencies": {
     "bootstrap-icons": "^1.11.0",
@@ -36,6 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "@typescript-eslint/parser": "^5.52.0",
     "cross-env": "^7.0.3",
+    "gh-pages": "^6.0.0",
     "parcel": "^2.8.3",
     "process": "^0.11.10",
     "rimraf": "^4.1.2",
