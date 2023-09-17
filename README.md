@@ -2,7 +2,10 @@
 
 Project to revolutionize educational examinations. 📝 😄
 
+Take a look: [LIVE APP](https://quizwhizai.netlify.app/) 🔗
+
 ## Technologies
+
 Backend: C#, ASP.Net, CockRoachDB
 
 Frontend: TypeScript, JavaScript, React.js, Tailwind
