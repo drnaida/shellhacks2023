@@ -20,13 +20,15 @@ namespace shellhacks2023.Controllers
         }
         [HttpGet]
         [Route("AllExams")]
-        public async Task<IActionResult> AllExams(Guid professorId)
+        public async Task<ActionResult<List<Exam>>> AllExams(Guid professorId)
         {
 
             //Get all exams for a professor Id by looking for his id in table exams
             var exams = await db.Exams
                 .Where(e => e.OwnerId == professorId)
-                .Join(
+                .Include(e=>e.Owner)
+                .ToListAsync();
+                /*.Join(
                     db.Users,
                     exam => exam.OwnerId,       // Key selector for the outer collection (Exams)
                     user => user.Id,            // Key selector for the inner collection (Users)
@@ -36,29 +38,27 @@ namespace shellhacks2023.Controllers
                         User = user
                     }
                 )
-                .ToListAsync();
+                .ToListAsync();*/
 
             return Ok(exams);
     }
 
     [HttpGet]
     [Route("QuestionsFromExam")]
-    public async Task<IActionResult> AllExamQuestions(Guid examId)
+    public async Task<ActionResult<ExamDTO>> QuestionsFromExam(Guid examId)
     {
-            var exam = await db.Exams
-                .Where(e => e.Id == examId)
-                .FirstOrDefaultAsync();
-            var exam_name = exam.Title;
-            var questions = await db.Questions
-                .Where(q => q.ExamId == examId)
-                .ToListAsync();
-            var data = new { exam_name, questions };
+            var exam = await db.Exams.Where(e => e.Id == examId).FirstOrDefaultAsync();
+            var questions = await db.Questions.Where(e=>e.ExamId == examId).ToListAsync();
+            var data = new ExamDTO{
+                Exam = exam,
+                Questions = questions
+            };
             return Ok(data);
     }
 
     [HttpPost]
     [Route("CreateExam")]
-    public async Task<IActionResult> CreateExam([FromBody] CreateExamRequest body)
+    public async Task<ActionResult<Exam>> CreateExam([FromBody] CreateExamRequest body)
     {
             var newExam = new Exam{
                 Title = body.title,
@@ -70,7 +70,7 @@ namespace shellhacks2023.Controllers
             Guid newExamId = newExam.Id;
             await AddQuestions(body.questions, newExamId);
 
-            return Ok(newExamId);
+            return Ok(newExam);
         }
 
         public async Task AddQuestions(List<string> questions, Guid examId)
@@ -88,7 +88,7 @@ namespace shellhacks2023.Controllers
 
         [HttpPut]
         [Route("UpdateExam")]
-        public async Task<IActionResult> UpdateExam([FromBody] UpdateExamRequest body)
+        public async Task<ActionResult<Exam>> UpdateExam([FromBody] UpdateExamRequest body)
         {
             //Get exam from id in body
             var exam = await db.Exams.Where(e => e.Id == body.examId).FirstOrDefaultAsync();
@@ -109,7 +109,7 @@ namespace shellhacks2023.Controllers
             //Add the new questions
             await AddQuestions(body.questions, body.examId);
 
-            return Ok();
+            return Ok(exam);
         }
     }
 

@@ -16,7 +16,7 @@ namespace shellhacks2023.Data
         [ForeignKey(nameof(User))]
         public Guid OwnerId { get; set; }
 
-        public List<Question> Questions { get; set; } = default!;
+        /*public List<Question> Questions { get; set; } = default!;*/
         public List<string> Topics { get; set; } = default!;
     }
 }
