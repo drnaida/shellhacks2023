@@ -22,7 +22,7 @@ namespace shellhacks2023.Controllers
             }
             [HttpGet]
             [Route("TestTextCompletion")]
-            public async Task<IActionResult> TestTextCompletion(string query)
+            public async Task<ActionResult<string>> TestTextCompletion(string query)
             {
                 //Get a response from the OpenAI API
                 var response = await openAi.GetCompletionAsync(query);
@@ -32,7 +32,7 @@ namespace shellhacks2023.Controllers
             }
             [HttpGet]
             [Route("TestChatCompletion")]
-            public async Task<IActionResult> TestChatCompletion(string query, string model)
+            public async Task<ActionResult<string>> TestChatCompletion(string query, string model)
             {
                 //Get a response from the OpenAI API
                 var response = await openAi.GetChatCompletionAsync(query, model);  

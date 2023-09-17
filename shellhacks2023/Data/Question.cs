@@ -12,7 +12,6 @@ namespace shellhacks2023.Data
         public string Text { get; set; } = default!;
 
         public Exam Exam { get; set; } = default!;
-        [ForeignKey(nameof(Exam))]
         public Guid ExamId { get; set; }
     }
 }

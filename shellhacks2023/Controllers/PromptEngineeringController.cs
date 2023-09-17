@@ -18,7 +18,7 @@ namespace shellhacks2023.Controllers
 
         [HttpPost]
         [Route("BatchQuestionGeneration")]
-        public async Task<IActionResult> BatchQuestionGeneration([FromBody] QuestionBatchRequest requestData)
+        public async Task<ActionResult<List<string>>> BatchQuestionGeneration([FromBody] QuestionBatchRequest requestData)
         {
             var topics_string = "";
             foreach (var topic in requestData.Topics)
@@ -43,7 +43,7 @@ namespace shellhacks2023.Controllers
         }
         [HttpPost]
         [Route("SingleQuestionGeneration")]
-        public async Task<IActionResult> SingleQuestionGeneration([FromBody] QuestionSingleRequest requestData)
+        public async Task<ActionResult<List<string>>> SingleQuestionGeneration([FromBody] QuestionSingleRequest requestData)
         {
             var topics_string = "";
             foreach (var topic in requestData.Topics)

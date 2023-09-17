@@ -17,7 +17,7 @@ namespace shellhacks2023.Data
 
             modelBuilder.Entity<Exam>()
                 .HasMany(x => x.Questions)
-                .WithOne(x => x.Exam);
+                .WithOne();
         }
     }
 }
