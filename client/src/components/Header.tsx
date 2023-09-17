@@ -1,13 +1,22 @@
 import classNames from "classnames";
-import { MortarboardFill } from "react-bootstrap-icons";
+import { DoorOpenFill, PersonFill } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
+import { User } from "../api/client";
 import logo from "../assets/mortarboard.png";
 import { Button } from "./Button";
 import { Link } from "./Link";
 
-export function Header(): JSX.Element {
+declare interface HeaderProps {
+  user: User | undefined;
+  setUser: React.Dispatch<User | undefined>;
+}
+
+export function Header({ user, setUser }: HeaderProps): JSX.Element {
   const iconClasses = classNames('text-xl');
   const rowClasses = classNames('w-full flex items-center justify-center mb-2');
+
+  const navigate = useNavigate();
 
   return (
     <header className="px-10 py-4 mb-10 bg-white border-custom flex justify-between">
@@ -19,10 +28,19 @@ export function Header(): JSX.Element {
       </Link>
 
       <div className="flex items-center">
-        <Button theme={Themes.Secondary}>
-          <MortarboardFill className={iconClasses} />
-          <span className="ml-1">View as Student</span>
-        </Button>
+        {!user &&
+          <Button theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Auth`)}>
+            <PersonFill className={iconClasses} />
+            <span className="ml-1">Log in</span>
+          </Button>}
+        {user &&
+          <div className="flex items-center">
+            <span className="mr-6 font-semibold text-darkGray text-xl">Hi, {user.name}!</span>
+            <Button theme={Themes.Info} className="flex items-center" onClick={() => setUser(undefined)}>
+              <DoorOpenFill className={iconClasses} />
+              <span className="ml-1">Sign out</span>
+            </Button>
+          </div>}
       </div>
     </header>
   )

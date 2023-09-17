@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from "react-hot-toast";
 import { Navigate, Route, RouterProvider, createHashRouter, createRoutesFromElements } from "react-router-dom";
 import { ContextProvider } from "./components/ContextProvider";
+import { Auth } from "./pages/Auth";
 import { EditExam } from "./pages/EditExam";
 import { Exams } from "./pages/Exams";
 import { GenerateExam } from "./pages/GenerateExam";
@@ -10,11 +11,11 @@ import { TakeExam } from "./pages/TakeExam";
 
 const STRICT = true;
 
-// TODO: make this work on cloud host with a browser router
-const router = /*createBrowserRouter(/**/ createHashRouter(
+const router = createHashRouter(
   createRoutesFromElements(
     <Route path='' element={<ContextProvider />}>
       <Route path='/' element={<Navigate to="/Exams" />} />
+      <Route path='/Auth' element={<Auth />} />
       <Route path='/Exams' element={<Exams />} />
       <Route path='/Exams/EditExam/:ExamId' element={<EditExam />} />
       <Route path='/Exams/CreateExam' element={<GenerateExam />} />

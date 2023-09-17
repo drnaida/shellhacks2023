@@ -11,7 +11,6 @@ namespace shellhacks2023.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         [Required]
-        
         public string Name { get; set; } = default!;
     }
 }
