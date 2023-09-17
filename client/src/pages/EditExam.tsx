@@ -4,7 +4,7 @@ import { ArrowRepeat } from "react-bootstrap-icons";
 import toast from "react-hot-toast";
 import { Form, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Themes from "../ThemableProps";
-import { Exam, Question, QuestionSingleRequest, UpdateExamRequest } from "../api/client";
+import { Exam, QuestionSingleRequest, UpdateExamRequest } from "../api/client";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
@@ -59,16 +59,17 @@ export function EditExam(): JSX.Element {
     }).catch(console.error);
   }, []);
 
-  const regenerateQuestion = (question: Question) => {
+  const regenerateQuestion = (oldQuestion: string) => {
     setSubmitting(true);
     const data = new QuestionSingleRequest({
       topics: exam?.topics,
-      question: question.text
+      question: oldQuestion
     });
     const promise = client!.promptEngineering_SingleQuestionGeneration(data);
     toast.promise(promise, genericSavingToast).then((newQuestion) => {
-      const tempArray: string[] = questions.filter((q) => q != question.text);
-      tempArray.push(newQuestion);
+      const indexOldQuestion = questions.indexOf(oldQuestion);
+      const tempArray: string[] = questions;
+      tempArray[indexOldQuestion] = newQuestion;
       setQuestions(tempArray);
       setSubmitting(false);
     }).catch(() => {
@@ -112,19 +113,19 @@ export function EditExam(): JSX.Element {
                 </div>
               </div>
               <div className="flex flex-row flex-wrap mb-3">
-                {questions.map((question: Question) => <Card className="mb-3 hover:shadow-xl">
+                {questions.map((question: string) => <Card className="mb-3 hover:shadow-xl">
                   <p className="whitespace-pre-wrap mb-2">
-                    {question.text}
+                    {question}
                   </p>
                   <div className="w-full flex flex-row justify-end">
-                    <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" onClick={(() => {
+                    <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" disabled={submitting} onClick={(() => {
                       regenerateQuestion(question);
                     })}><ArrowRepeat className="mr-2 h-4 w-4" /><span>Regenerate Question</span></Button>
                   </div>
                 </Card>)}
               </div>
               <div className="flex flex-row justify-center">
-                <Button type="submit" theme={Themes.Primary}>Submit</Button>
+                <Button type="submit" theme={Themes.Primary} disabled={submitting}>Submit</Button>
               </div>
             </Form>
           </Formik>
