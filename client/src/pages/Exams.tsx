@@ -27,11 +27,12 @@ export function Exams(): JSX.Element {
 
   useEffect(() => {
     setLoading(true);
+    if(!user) return;
     client?.exams_AllExams(user?.id).then(res => {
       setExams(res);
       setLoading(false);
     }).catch(console.error);
-  }, []);
+  }, [user]);
 
   return (
     <Container width="narrow" className="animate-fade">

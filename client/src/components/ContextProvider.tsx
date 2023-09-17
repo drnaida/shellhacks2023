@@ -45,9 +45,8 @@ export function ContextProvider() {
         navigate("/Exams");
       }
     }
-  }, [user, navigate, location]);
+  }, [location, navigate]);
   const logout = () => {
-    console.log("Logging out");
     localStorage.removeItem("user");
     setUser(undefined);
     navigate("/Auth");
