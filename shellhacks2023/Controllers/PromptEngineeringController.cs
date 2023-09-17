@@ -3,6 +3,8 @@ using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using shellhacks2023.Services;
 using System.Text.RegularExpressions;
 using shellhacks2023.Models;
+using shellhacks2023.Data;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace shellhacks2023.Controllers
@@ -12,8 +14,10 @@ namespace shellhacks2023.Controllers
     public class PromptEngineeringController : Controller
     {
         private OpenAIService openAi;
-        public PromptEngineeringController(OpenAIService openAIService) {
+        private DataContext db;
+        public PromptEngineeringController(OpenAIService openAIService, DataContext db) {
             this.openAi = openAIService;
+            this.db = db;
         }
 
         [HttpPost]
@@ -65,6 +69,48 @@ namespace shellhacks2023.Controllers
 
             // Return the response
             return Ok(questions[0]);
+        }
+        [HttpPost]
+        [Route("BatchAnswerGeneration")]
+        public async Task<ActionResult<Dictionary<Guid, string>>> BatchAnswerGeneration([FromBody] AnswerBatchRequest requestData)
+        {
+            var questions_string = "";
+            var answers_string = "";
+            var idx_dict = new Dictionary<string, Guid>();
+            var idx = 1;
+            foreach (var answer in requestData.Answers)
+            {
+                Guid question_id = answer.Key;
+                var question = db.Questions.Where(q=>q.Id==question_id).FirstOrDefaultAsync().Result.Text;
+                questions_string += question_id + " - " + question + "\n";
+                answers_string += question_id + " - " + answer.Value + "\n";
+                /*idx_dict.Add(idx.ToString(), question_id);
+                idx++;*/
+            }
+
+            var context = $"A student is being evaluated. They were just asked the following questions:\n {questions_string}. And they had the following ansswers:\n{answers_string}";
+
+            var prompt = $"Evaluate their answers with either \"correct\",\"incorrect\". Format it like this:\n-<- {{AnswerId}} ::: {{evaluation}} ->-";
+
+            var request = context + prompt;
+            if (requestData.Model == null) requestData.Model = "GPT-4";
+            // Get a response from the OpenAI API
+            var response = await openAi.GetChatCompletionAsync(request, requestData.Model);
+            var result_pattern = @"-<- (.+?) ->-";
+            var evaluations = new Dictionary<Guid, string>();
+            MatchCollection matches = Regex.Matches(response, result_pattern);
+            foreach (Match match in matches)
+            {
+                var text = match.Groups[1].Value;
+                var regex = new Regex(":::");
+                var content = regex.Split(text);
+                var q_id = new Guid(content[0].Trim()); // idx_dict[content[0]];
+                var eval = content[1];
+                evaluations.Add(q_id, eval);
+            }
+
+            // Return the response
+            return Ok(evaluations);
         }
     }
 }
