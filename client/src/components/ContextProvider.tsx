@@ -34,6 +34,10 @@ export function ContextProvider() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser && location.pathname != "/Auth" && location.pathname != "/") {
+      if(location.pathname.includes("Student")){
+        //Save the location to redirect to after login
+        localStorage.setItem("redirect-to", location.pathname );
+      }
       navigate("/Auth");
     } else if (storedUser) {
       if(!user) {

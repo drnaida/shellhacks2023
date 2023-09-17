@@ -1,4 +1,4 @@
-import { EyeFill, PencilFill, PlusCircleFill } from "react-bootstrap-icons";
+import { EyeFill, PencilFill, PlusCircleFill, Link45deg } from "react-bootstrap-icons";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -90,6 +90,12 @@ export function ExamCard({ name, id }: ExamCardProps): JSX.Element {
           <div>
             <Button type="button" theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Exams/EditExam/${id}`)}><PencilFill className="h-4 w-4 mr-2" /><span>Edit</span></Button>
             <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/Student/${id}`)}><EyeFill className="h-4 w-4 mr-2" /><span>View</span></Button>
+            {/* Create button to copy a link of the format https://{current_url}/student/{exam_id} */}
+            <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => {
+              //Copy to clipboard
+              const url = `${window.location.origin}/#/Exams/Student/${id}`;
+              navigator.clipboard.writeText(url);
+            }}><Link45deg className="h-full" /></Button>
           </div>
         </div>
       </div>
