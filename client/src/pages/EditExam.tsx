@@ -8,7 +8,7 @@ import { Exam, Question, QuestionSingleRequest, UpdateExamRequest } from "../api
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
-import { UserContextProps } from "../components/ContextProvider";
+import { AuthContext } from "../components/ContextProvider";
 import { Loading } from "../components/Loading";
 import { PageHeading } from "../components/PageHeading";
 import { genericSavingToast } from "../helpers/toastHelpers";
@@ -36,7 +36,7 @@ export function EditExam(): JSX.Element {
       },
     ]
   }
-  const { client }: UserContextProps = useOutletContext();
+  const { client, setUser }: AuthContext = useOutletContext();
   const [exam, setExam] = useState<Exam>();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loadingData, setLoadingData] = useState<boolean>(false);
@@ -62,8 +62,10 @@ export function EditExam(): JSX.Element {
     });
     const promise = client!.promptEngineering_SingleQuestionGeneration(data);
     toast.promise(promise, genericSavingToast).then((newQuestion) => {
-      const tempArray = questions.filter((q) => q.text != question.text)
-      tempArray.push(newQuestion);
+      const oldQuestion = questions.find((q) => q.text == question.text);
+      const tempArray: Question[] = questions.filter((q) => q.text != question.text);
+      oldQuestion!.text = newQuestion;
+      tempArray.push(oldQuestion!);
       setQuestions(tempArray);
       setSubmitting(false);
     }).catch(() => {
@@ -74,9 +76,10 @@ export function EditExam(): JSX.Element {
 
   const onSubmit = async (values: typeof initialValues) => {
     const model = new UpdateExamRequest({
-      title: values.examName,
+      title: exam?.title,
       questions: questions,
-      topics: keyStatements
+      topics: exam?.topics,
+      examId: exam?.id
 
     });
     const promise = client?.exams_UpdateExam(model);

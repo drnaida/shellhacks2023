@@ -8,7 +8,7 @@ import { CreateExamRequest, QuestionBatchRequest } from "../api/client";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
-import { UserContextProps } from "../components/ContextProvider";
+import { AuthContext } from "../components/ContextProvider";
 import { NumericField } from "../components/NumericField";
 import { PageHeading } from "../components/PageHeading";
 import { TextField } from "../components/TextField";
@@ -48,7 +48,7 @@ function CreatExamForm(): JSX.Element {
     questionsNumber: '',
     keywords: ''
   }
-  const { client }: UserContextProps = useOutletContext();
+  const { client, user }: AuthContext = useOutletContext();
   const onSubmit = async (values: typeof initialValues) => {
     setSubmitting(true);
     const data = new QuestionBatchRequest({
@@ -61,13 +61,14 @@ function CreatExamForm(): JSX.Element {
       const model = new CreateExamRequest({
         title: values.examName,
         questions: questions,
-        topics: keyStatements
+        topics: keyStatements,
+        professorId: user?.id
 
       });
       const promise = client?.exams_CreateExam(model);
-      toast.promise(promise, genericSavingToast).then(() => {
+      toast.promise(promise, genericSavingToast).then((exam) => {
         setSubmitting(false);
-        navigate('/Exams/EditExam/:ExamId');
+        navigate(`/Exams/EditExam/${exam.id}`);
       }).catch(() => {
         toast.error('Unable to save changes, a server error occured.');
       });
