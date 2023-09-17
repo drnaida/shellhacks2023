@@ -90,7 +90,7 @@ namespace shellhacks2023.Controllers
 
             var context = $"A student is being evaluated. They were just asked the following questions:\n {questions_string}. And they had the following ansswers:\n{answers_string}";
 
-            var prompt = $"Evaluate their answers with either \"correct\",\"incorrect\". Format it like this:\n-<- {{AnswerId}} ::: {{evaluation}} ->-";
+            var prompt = $"Evaluate their answers with either \"correct\",\"incorrect\" or \"Unsure\". Format it like this:\n-<- {{AnswerId}} ::: {{evaluation}} ->-";
 
             var request = context + prompt;
             if (requestData.Model == null) requestData.Model = "GPT-4";
@@ -99,6 +99,7 @@ namespace shellhacks2023.Controllers
             var result_pattern = @"-<- (.+?) ->-";
             var evaluations = new Dictionary<Guid, string>();
             MatchCollection matches = Regex.Matches(response, result_pattern);
+            var status = "Confident";
             foreach (Match match in matches)
             {
                 var text = match.Groups[1].Value;
@@ -106,7 +107,43 @@ namespace shellhacks2023.Controllers
                 var content = regex.Split(text);
                 var q_id = idx_dict[(content[0].Trim())]; // idx_dict[content[0]];
                 var eval = content[1];
+                if(eval.ToLower() == "unsure")
+                {
+                    status = "Not Confident";
+                }
                 evaluations.Add(q_id, eval);
+            }
+
+            if (requestData.StudentId != null && requestData.SaveAnswer != null)
+            {
+                if (requestData.SaveAnswer.Value)
+                {
+                    //Get exa id from question
+                    Guid examId = db.Questions.Where(q => q.Id == requestData.Answers.Keys.First()).FirstOrDefaultAsync().Result.ExamId;
+                    //Create a session
+                    var session = new Session
+                    {
+                        StudentId = requestData.StudentId.Value,
+                        ExamId = examId,
+                    };
+                    db.Sessions.Add(session);
+                    await db.SaveChangesAsync();
+
+                    foreach (var answer in requestData.Answers)
+                    {
+                        var answer_data = new Answer
+                        {
+                            QuestionId = answer.Key,
+                            Text = answer.Value,
+                            Feedback = evaluations[answer.Key],
+                            SessionId = session.Id
+                            
+                        };
+                        db.Answers.Add(answer_data);
+                    }
+                    await db.SaveChangesAsync();
+
+                }
             }
 
             // Return the response

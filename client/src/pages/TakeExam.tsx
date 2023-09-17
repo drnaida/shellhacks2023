@@ -16,7 +16,7 @@ import { answersCheckedToast } from "../helpers/toastHelpers";
 type answersType = { [key: string]: string };
 
 export function TakeExam(): JSX.Element {
-  const { client }: AuthContext = useOutletContext();
+  const { client, user }: AuthContext = useOutletContext();
   const [exam, setExam] = useState<Exam>();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [modelAnswers, setModelAnswers] = useState<answersType>({});
@@ -52,6 +52,8 @@ export function TakeExam(): JSX.Element {
     setSubmitting(true);
     const data = new AnswerBatchRequest({
       answers: values,
+      saveAnswer: true,
+      studentId: user?.id,
     });
     console.log(values);
     const promise = client!.promptEngineering_BatchAnswerGeneration(data);
@@ -117,7 +119,7 @@ export function QuestionCard({ text, id, evaluationResult, evaluated, submitting
   let evaluationResultText = '';
   let evaluationResultColor = '';
   if (evaluated) {
-    const response = String(evaluationResult).trim();
+    const response = String(evaluationResult).trim().toLowerCase();
     if (response === 'correct') {
       evaluationResultText = 'Correct';
       evaluationResultColor = 'bg-green-700';

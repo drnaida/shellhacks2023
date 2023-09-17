@@ -10,6 +10,8 @@ namespace shellhacks2023.Data
         public DbSet<User> Users { get; set; } = default!;
         public DbSet<Exam> Exams { get; set; } = default!;
         public DbSet<Question> Questions { get; set; } = default!;
+        public DbSet<Answer> Answers { get; set; } = default!;
+        public DbSet<Session> Sessions { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
