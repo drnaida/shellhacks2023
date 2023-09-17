@@ -7,9 +7,10 @@ export declare interface ButtonProps extends ThemableProps, AppProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   size?: 'small' | 'medium',
   type?: 'button' | 'submit' | 'reset'
+  title?: any;
 }
 
-export function Button({ theme, size, type, ...props }: ButtonProps): JSX.Element {
+export function Button({ theme, size, type, title, ...props }: ButtonProps): JSX.Element {
   size = size ?? 'medium';
   type = type ?? 'button';
   const componentClasses = classNames(
@@ -33,7 +34,8 @@ export function Button({ theme, size, type, ...props }: ButtonProps): JSX.Elemen
     <button className={componentClasses}
       type={type}
       onClick={props.onClick}
-      disabled={props.disabled}>
+      disabled={props.disabled}
+      title={title}>
       {props.children}
     </button>
   );
