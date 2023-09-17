@@ -17,7 +17,18 @@ builder.Services.AddCors(options =>
     {
         options.AddPolicy(CorsPolicyParcel, policy =>
         {
-            policy.WithOrigins("https://localhost:1234")
+           policy.AllowAnyOrigin()
+           //policy.WithOrigins("https://localhost:1234", "https://zippy-dieffenbachia-99258a.netlify.app")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    }
+    else
+    {
+        options.AddPolicy(CorsPolicyParcel, policy =>
+        {
+            policy.AllowAnyOrigin()
+            //policy.WithOrigins("https://localhost:1234", "https://zippy-dieffenbachia-99258a.netlify.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -70,8 +81,8 @@ if (!app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseCors(CorsPolicyParcel);
 }
+app.UseCors(CorsPolicyParcel);
 
 app.UseHttpsRedirection();
 app.UseAuthorization();

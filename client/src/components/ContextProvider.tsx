@@ -4,7 +4,7 @@ import { Client, User } from '../api/client';
 import { Footer } from './Footer';
 import { Header } from './Header';
 
-const devBaseUrl = 'https://localhost:7183';
+const devBaseUrl = "https://shellhacks2023-production.up.railway.app";//'https://localhost:7183';
 
 export declare interface AuthContextState {
   client: Client | undefined;
@@ -34,6 +34,10 @@ export function ContextProvider() {
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser && location.pathname != "/Auth" && location.pathname != "/") {
+      if(location.pathname.includes("Student")){
+        //Save the location to redirect to after login
+        localStorage.setItem("redirect-to", location.pathname );
+      }
       navigate("/Auth");
     } else if (storedUser) {
       if(!user) {
@@ -45,9 +49,8 @@ export function ContextProvider() {
         navigate("/Exams");
       }
     }
-  }, [user, navigate, location]);
+  }, [location, navigate]);
   const logout = () => {
-    console.log("Logging out");
     localStorage.removeItem("user");
     setUser(undefined);
     navigate("/Auth");

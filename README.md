@@ -42,3 +42,33 @@ Once data context has been modified, open a terminal on the root of the project 
 If the above succeed then run
 
     > dotnet ef database update
+
+## How to deploy 🚀
+
+Deploy frontend and backend separately.
+
+### Backend
+
+Already has Dockerfile, therefore only thing to do is to deploy it on railway. Login into railway (for now only `Alvaro's` account):
+
+    railway login
+
+Then deploy using
+
+    railway up
+
+It's that simple. If it says it has no linked project then just run:
+
+    railway link
+
+And then select shellhacks2023
+
+### Frontend
+
+First make sure the server url is the deployed server, it should be a railway.app link. Localhost is for development only not production.
+
+CD into the client folder and run:
+
+    yarn run build-prod
+
+This command will create a `dist` folder (or update it). To deploy it login into netlify (for now Alvaro's account). Select deploys and drag and drop the `dist` folder and it will deploy.

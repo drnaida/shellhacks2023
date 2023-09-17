@@ -34,7 +34,14 @@ export function Auth(): JSX.Element {
     if (user) {
       setUser(user);
       localStorage.setItem("user", JSON.stringify(user));
-      navigate(`/Exams`);
+      //Check localStorage for redirect-to
+      const redirectTo = localStorage.getItem("redirect-to");
+      if (redirectTo) {
+        navigate(redirectTo);
+        localStorage.removeItem("redirect-to");
+      } else {
+        navigate(`/Exams`);
+      }
     }
   }
 
