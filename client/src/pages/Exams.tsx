@@ -20,24 +20,6 @@ const svgFiles = [exam1, exam2, exam3, exam4, exam5];
 
 
 export function Exams(): JSX.Element {
-  const examsMock = [
-    {
-      name: 'Exam 1. Microbiology and cellucar molecular biology',
-      id: '12345678'
-    },
-    {
-      name: 'Exam 2. Physics, Newton and the pressure law',
-      id: '12345679'
-    },
-    {
-      name: 'Exam 3. Microbiology and cellucar molecular biology, very long exam name very very very long. Exam 3. Microbiology and cellucar molecular biology, very long exam name very very very long',
-      id: '12345679'
-    },
-    {
-      name: 'Exam 4. Microbiology and cellucar molecular biology',
-      id: '12345679'
-    },
-  ];
   const { client, user }: AuthContext = useOutletContext();
   const navigate = useNavigate();
   const [exams, setExams] = useState<Exam[]>([]);
