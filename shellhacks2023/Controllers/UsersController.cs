@@ -51,5 +51,18 @@ namespace shellhacks2023.Controllers
 
             return user;
         }
+
+        [HttpGet]
+        [Route("GetUserByName")]
+        public async Task<ActionResult<User>> GetUserByName(string name)
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Name == name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
+        }
     }
 }
