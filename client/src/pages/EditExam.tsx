@@ -11,7 +11,7 @@ import { Container } from "../components/Container";
 import { AuthContext } from "../components/ContextProvider";
 import { Loading } from "../components/Loading";
 import { PageHeading } from "../components/PageHeading";
-import { genericSavingToast } from "../helpers/toastHelpers";
+import { editExamToast, questionRegeneratedToast } from "../helpers/toastHelpers";
 
 export function EditExam(): JSX.Element {
   const { client, setUser }: AuthContext = useOutletContext();
@@ -44,14 +44,14 @@ export function EditExam(): JSX.Element {
       question: oldQuestion
     });
     const promise = client!.promptEngineering_SingleQuestionGeneration(data);
-    toast.promise(promise, genericSavingToast).then((newQuestion) => {
+    toast.promise(promise, questionRegeneratedToast).then((newQuestion) => {
       const indexOldQuestion = questions.indexOf(oldQuestion);
       const tempArray: string[] = questions;
       tempArray[indexOldQuestion] = newQuestion;
       setQuestions(tempArray);
       setSubmitting(false);
     }).catch(() => {
-      toast.error('Unable to regenerate, a server error occured. Please try again.');
+      toast.error('Unable to regenerate a question, a server error occured.');
       setSubmitting(false);
     });
   }
@@ -65,7 +65,7 @@ export function EditExam(): JSX.Element {
       examId: exam?.id
     });
     const promise = client!.exams_UpdateExam(model);
-    toast.promise(promise, genericSavingToast).then(() => {
+    toast.promise(promise, editExamToast).then(() => {
       setSubmitting(false);
       navigate('/Exams');
     }).catch(() => {

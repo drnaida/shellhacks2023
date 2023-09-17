@@ -12,7 +12,7 @@ import { AuthContext } from "../components/ContextProvider";
 import { NumericField } from "../components/NumericField";
 import { PageHeading } from "../components/PageHeading";
 import { TextField } from "../components/TextField";
-import { genericSavingToast } from "../helpers/toastHelpers";
+import { createExamToast } from "../helpers/toastHelpers";
 
 export function GenerateExam(): JSX.Element {
   return (
@@ -54,8 +54,10 @@ function CreatExamForm(): JSX.Element {
       topics: keyStatements
     });
     console.log(data);
-
+    const toastId = toast.loading('Generating questions...');
     client?.promptEngineering_BatchQuestionGeneration(data).then(questions => {
+      toast.dismiss(toastId);
+      toast.success('Questions were generated.');
       const model = new CreateExamRequest({
         title: values.examName,
         questions: questions,
@@ -64,7 +66,7 @@ function CreatExamForm(): JSX.Element {
 
       });
       const promise = client?.exams_CreateExam(model);
-      toast.promise(promise, genericSavingToast).then((exam) => {
+      toast.promise(promise, createExamToast).then((exam) => {
         setSubmitting(false);
         navigate(`/Exams/EditExam/${exam.id}`);
       }).catch(() => {

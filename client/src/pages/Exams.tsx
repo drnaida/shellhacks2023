@@ -1,4 +1,4 @@
-import { EyeFill, PencilFill, PlusCircleFill, Link45deg } from "react-bootstrap-icons";
+import { EyeFill, PencilFill, PlusCircleFill } from "react-bootstrap-icons";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -7,6 +7,8 @@ import { Container } from "../components/Container";
 import { PageHeading } from "../components/PageHeading";
 
 import { useEffect, useState } from "react";
+import { ShareFill } from "react-bootstrap-icons";
+import toast from "react-hot-toast";
 import { Exam } from "../api/client";
 import exam1 from '../assets/exams/exam1.svg';
 import exam2 from '../assets/exams/exam2.svg';
@@ -27,7 +29,7 @@ export function Exams(): JSX.Element {
 
   useEffect(() => {
     setLoading(true);
-    if(!user) return;
+    if (!user) return;
     client?.exams_AllExams(user?.id).then(res => {
       setExams(res);
       setLoading(false);
@@ -53,7 +55,7 @@ export function Exams(): JSX.Element {
         </div>
 
         <div>
-          {exams.length > 1 ? exams.map((exam) => (
+          {exams.length > 0 ? exams.map((exam) => (
             <ExamCard name={exam.title} id={exam.id!} />
           )) : <div className="">
             <p className="text-lg text-center my-20 text-darkGray font-semibold">You did not create any exams yet.</p>
@@ -91,11 +93,13 @@ export function ExamCard({ name, id }: ExamCardProps): JSX.Element {
             <Button type="button" theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Exams/EditExam/${id}`)}><PencilFill className="h-4 w-4 mr-2" /><span>Edit</span></Button>
             <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/Student/${id}`)}><EyeFill className="h-4 w-4 mr-2" /><span>View</span></Button>
             {/* Create button to copy a link of the format https://{current_url}/student/{exam_id} */}
-            <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => {
+            <Button type="button" theme={Themes.Primary} className="flex items-center" title="Copy Link for Students" onClick={() => {
               //Copy to clipboard
               const url = `${window.location.origin}/#/Exams/Student/${id}`;
               navigator.clipboard.writeText(url);
-            }}><Link45deg className="h-full" /></Button>
+              toast.success('Link copied to clipboard.');
+            }}> <ShareFill className="h-full" />
+            </Button>
           </div>
         </div>
       </div>
