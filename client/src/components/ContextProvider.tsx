@@ -1,10 +1,9 @@
-import { useState, useEffect} from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { GetBaseUrl } from '../api/build';
 import { Client, User } from '../api/client';
 import { Footer } from './Footer';
 import { Header } from './Header';
-
-const devBaseUrl = "https://shellhacks2023-production.up.railway.app";//'https://localhost:7183';
 
 export declare interface AuthContextState {
   client: Client | undefined;
@@ -12,7 +11,7 @@ export declare interface AuthContextState {
 }
 export function nullAuthContext(): AuthContextState {
   return {
-    client: new Client(devBaseUrl),
+    client: new Client(GetBaseUrl()),
     user: undefined,
   };
 }
