@@ -60,7 +60,10 @@ export function EditExam(): JSX.Element {
       question: question.text
     });
     const promise = client!.promptEngineering_SingleQuestionGeneration(data);
-    toast.promise(promise, genericSavingToast).then(() => {
+    toast.promise(promise, genericSavingToast).then((newQuestion) => {
+      const tempArray = questions.filter((q) => q.text != question.text)
+      tempArray.push(newQuestion);
+      setQuestions(tempArray);
       setSubmitting(false);
     }).catch(() => {
       toast.error('Unable to regenerate, a server error occured. Please try again.');
