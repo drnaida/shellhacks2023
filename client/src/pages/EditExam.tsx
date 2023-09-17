@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { ArrowRepeat } from "react-bootstrap-icons";
 import toast from "react-hot-toast";
-import { useOutletContext, useParams } from "react-router-dom";
+import { Form, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Exam, Question, QuestionSingleRequest, UpdateExamRequest } from "../api/client";
 import { Button } from "../components/Button";
@@ -38,10 +38,11 @@ export function EditExam(): JSX.Element {
   }
   const { client, setUser }: AuthContext = useOutletContext();
   const [exam, setExam] = useState<Exam>();
-  const [questions, setQuestions] = useState<Question[]>([]);
+  const [questions, setQuestions] = useState<string[]>([]);
   const [loadingData, setLoadingData] = useState<boolean>(false);
   const examId: string = useParams()['ExamId']!;
   const [submitting, setSubmitting] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoadingData(true);
@@ -49,7 +50,11 @@ export function EditExam(): JSX.Element {
       setExam(res.exam);
       if (!res.exam) throw new Error("Failed to fetch the exam data. Please try again.")
       if (!res.questions) throw new Error("Failed to generate questions. Please try again.");
-      setQuestions(res.questions);
+      const tempArray = [];
+      for (const obj of res.questions) {
+        tempArray.push(String(obj.text));
+      }
+      setQuestions(tempArray);
       setLoadingData(false);
     }).catch(console.error);
   }, []);
@@ -62,10 +67,8 @@ export function EditExam(): JSX.Element {
     });
     const promise = client!.promptEngineering_SingleQuestionGeneration(data);
     toast.promise(promise, genericSavingToast).then((newQuestion) => {
-      const oldQuestion = questions.find((q) => q.text == question.text);
-      const tempArray: Question[] = questions.filter((q) => q.text != question.text);
-      oldQuestion!.text = newQuestion;
-      tempArray.push(oldQuestion!);
+      const tempArray: string[] = questions.filter((q) => q != question.text);
+      tempArray.push(newQuestion);
       setQuestions(tempArray);
       setSubmitting(false);
     }).catch(() => {
@@ -80,12 +83,11 @@ export function EditExam(): JSX.Element {
       questions: questions,
       topics: exam?.topics,
       examId: exam?.id
-
     });
-    const promise = client?.exams_UpdateExam(model);
+    const promise = client!.exams_UpdateExam(model);
     toast.promise(promise, genericSavingToast).then(() => {
       setSubmitting(false);
-      navigate('/Exams/EditExam/:ExamId');
+      navigate('/Exams');
     }).catch(() => {
       toast.error('Unable to save changes, a server error occured.');
     });
@@ -99,30 +101,32 @@ export function EditExam(): JSX.Element {
         </>}
         {!loadingData && <>
           <Formik initialValues={{}} onSubmit={onSubmit} enableReinitialize>
-            <PageHeading>
-              Create Exam
-            </PageHeading>
-            <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 2. Questions for {exam?.title}.</h2>
-            <div className="mt-2 mb-4">
-              <div className="mb-2">
-                Please look at the generated questions. If you want to regenerate a question, click at the "Regenerate Question" button. Submit when you like all of the questions.
-              </div>
-            </div>
-            <div className="flex flex-row flex-wrap mb-3">
-              {questions.map((question: Question) => <Card className="mb-3 hover:shadow-xl">
-                <p className="whitespace-pre-wrap mb-2">
-                  {question.text}
-                </p>
-                <div className="w-full flex flex-row justify-end">
-                  <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" onClick={(() => {
-                    regenerateQuestion(question);
-                  })}><ArrowRepeat className="mr-2 h-4 w-4" /><span>Regenerate Question</span></Button>
+            <Form>
+              <PageHeading>
+                Create Exam
+              </PageHeading>
+              <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 2. Questions for {exam?.title}.</h2>
+              <div className="mt-2 mb-4">
+                <div className="mb-2">
+                  Please look at the generated questions. If you want to regenerate a question, click at the "Regenerate Question" button. Submit when you like all of the questions.
                 </div>
-              </Card>)}
-            </div>
-            <div className="flex flex-row justify-center">
-              <Button type="submit" theme={Themes.Primary}>Submit</Button>
-            </div>
+              </div>
+              <div className="flex flex-row flex-wrap mb-3">
+                {questions.map((question: Question) => <Card className="mb-3 hover:shadow-xl">
+                  <p className="whitespace-pre-wrap mb-2">
+                    {question.text}
+                  </p>
+                  <div className="w-full flex flex-row justify-end">
+                    <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" onClick={(() => {
+                      regenerateQuestion(question);
+                    })}><ArrowRepeat className="mr-2 h-4 w-4" /><span>Regenerate Question</span></Button>
+                  </div>
+                </Card>)}
+              </div>
+              <div className="flex flex-row justify-center">
+                <Button type="submit" theme={Themes.Primary}>Submit</Button>
+              </div>
+            </Form>
           </Formik>
         </>}
       </Container>
