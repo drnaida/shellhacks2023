@@ -10,9 +10,10 @@ import { Link } from "./Link";
 declare interface HeaderProps {
   user: User | undefined;
   setUser: React.Dispatch<User | undefined>;
+  logout: () => void;
 }
 
-export function Header({ user, setUser }: HeaderProps): JSX.Element {
+export function Header({ user, setUser, logout }: HeaderProps): JSX.Element {
   const iconClasses = classNames('text-xl');
   const rowClasses = classNames('w-full flex items-center justify-center mb-2');
 
@@ -36,7 +37,7 @@ export function Header({ user, setUser }: HeaderProps): JSX.Element {
         {user &&
           <div className="flex items-center">
             <span className="mr-6 font-semibold text-darkGray text-xl">Hi, {user.name}!</span>
-            <Button theme={Themes.Info} className="flex items-center" onClick={() => setUser(undefined)}>
+            <Button theme={Themes.Info} className="flex items-center" onClick={() => logout()}>
               <DoorOpenFill className={iconClasses} />
               <span className="ml-1">Sign out</span>
             </Button>

@@ -33,7 +33,8 @@ export function Auth(): JSX.Element {
 
     if (user) {
       setUser(user);
-      navigate(`/`);
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate(`/Exams`);
     }
   }
 

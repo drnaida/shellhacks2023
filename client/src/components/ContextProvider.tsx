@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { useState, useEffect} from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Client, User } from '../api/client';
 import { Footer } from './Footer';
 import { Header } from './Header';
@@ -25,13 +25,27 @@ export declare interface AuthContext {
 }
 
 export function ContextProvider() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [state, setState] = useState<AuthContextState>(nullAuthContext());
   const [user, setUser] = useState(state.user);
   const loggedIn = user !== null;
 
-
+  useEffect(() => {
+    if(location.pathname == "/Auth" || location.pathname == "/") return;
+    const storedUser = localStorage.getItem("user");
+    if (!storedUser) {
+      navigate("/Auth");
+    } else if (storedUser && !user) {
+      // If you have stored the user data as a stringified JSON, you can parse it like so:
+      setUser(JSON.parse(storedUser));
+    }
+  }, [user, navigate, location]);
   const logout = () => {
+    console.log("Logging out");
+    localStorage.removeItem("user");
     setUser(undefined);
+    navigate("/Auth");
   }
 
   const outletContext: AuthContext = {
@@ -43,7 +57,7 @@ export function ContextProvider() {
 
   return (
     <>
-      <Header user={user} setUser={setUser} />
+      <Header user={user} setUser={setUser} logout={logout} />
       <Outlet context={outletContext} />
       <Footer />
     </>
