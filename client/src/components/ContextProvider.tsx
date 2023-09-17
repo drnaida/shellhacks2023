@@ -22,7 +22,6 @@ export declare interface AuthContext {
   client: Client | undefined;
   user: User | undefined;
   setUser: React.Dispatch<User>;
-  loggedIn: boolean;
 }
 
 export function ContextProvider() {
@@ -40,12 +39,11 @@ export function ContextProvider() {
     client: state.client,
     user: user,
     setUser: setUser,
-    loggedIn: loggedIn
   }
 
   return (
     <>
-      <Header />
+      <Header user={user} setUser={setUser} />
       <Outlet context={outletContext} />
       <Footer />
     </>

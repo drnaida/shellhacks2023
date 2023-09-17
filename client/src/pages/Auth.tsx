@@ -1,7 +1,7 @@
 import classNames from "classnames";
 import { Form, Formik } from "formik";
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { CreateUserRequest } from "../api/client";
 import logo from "../assets/mortarboard.png";
@@ -14,6 +14,7 @@ import { TextField } from "../components/TextField";
 export function Auth(): JSX.Element {
   const [submitting, setSubmitting] = useState(false);
   const { client, setUser }: AuthContext = useOutletContext();
+  const navigate = useNavigate();
 
   const initialValues = {
     name: ""
@@ -31,7 +32,7 @@ export function Auth(): JSX.Element {
     }
 
     setUser(user!);
-    setSubmitting(false);
+    navigate(`/`);
   }
 
   const cardClasses = classNames(

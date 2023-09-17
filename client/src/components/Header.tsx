@@ -2,11 +2,17 @@ import classNames from "classnames";
 import { PersonFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
+import { User } from "../api/client";
 import logo from "../assets/mortarboard.png";
 import { Button } from "./Button";
 import { Link } from "./Link";
 
-export function Header(): JSX.Element {
+declare interface HeaderProps {
+  user: User | undefined;
+  setUser: React.Dispatch<User>;
+}
+
+export function Header({ user, setUser }: HeaderProps): JSX.Element {
   const iconClasses = classNames('text-xl');
   const rowClasses = classNames('w-full flex items-center justify-center mb-2');
 
@@ -22,10 +28,12 @@ export function Header(): JSX.Element {
       </Link>
 
       <div className="flex items-center">
-        <Button theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Auth`)}>
-          <PersonFill className={iconClasses} />
-          <span className="ml-1">Log in</span>
-        </Button>
+        {!user &&
+          <Button theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Auth`)}>
+            <PersonFill className={iconClasses} />
+            <span className="ml-1">Log in</span>
+          </Button>}
+        {user && <span>Hello, {user?.name}!</span>}
       </div>
     </header>
   )

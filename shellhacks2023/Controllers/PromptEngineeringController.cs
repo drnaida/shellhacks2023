@@ -47,7 +47,7 @@ namespace shellhacks2023.Controllers
         }
         [HttpPost]
         [Route("SingleQuestionGeneration")]
-        public async Task<ActionResult<List<string>>> SingleQuestionGeneration([FromBody] QuestionSingleRequest requestData)
+        public async Task<ActionResult<string>> SingleQuestionGeneration([FromBody] QuestionSingleRequest requestData)
         {
             var topics_string = "";
             foreach (var topic in requestData.Topics)
