@@ -52,9 +52,11 @@ export function Exams(): JSX.Element {
         </div>
 
         <div>
-          {exams.map((exam) => (
+          {exams.length > 1 ? exams.map((exam) => (
             <ExamCard name={exam.title} id={exam.id!} />
-          ))}
+          )) : <div className="">
+            <p className="text-lg text-center my-20 text-darkGray font-semibold">You did not create any exams yet.</p>
+          </div>}
         </div>
       </>}
     </Container>
