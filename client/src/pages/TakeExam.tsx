@@ -1,33 +1,34 @@
 import { Form, Formik } from "formik";
-import { useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import Themes from "../ThemableProps";
+import { Exam, Question } from "../api/client";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
-import { AuthContextState } from "../components/ContextProvider";
+import { AuthContext } from "../components/ContextProvider";
 import { PageHeading } from "../components/PageHeading";
 import { TextAreaField } from "../components/TextArea";
 
 export function TakeExam(): JSX.Element {
-  const { client }: AuthContextState = useOutletContext();
-  const questions = [
-    {
-      text: 'Q1 Text',
-      id: '1'
-    },
-    {
-      text: 'Q2 Text',
-      id: '2'
-    },
-    {
-      text: 'Q3 Text',
-      id: '3'
-    },
-    {
-      text: 'Q4 Text',
-      id: '4'
-    },
-  ];
+  const { client }: AuthContext = useOutletContext();
+  const [exam, setExam] = useState<Exam>();
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [loadingData, setLoadingData] = useState<boolean>(false);
+  const examId: string = useParams()['ExamId']!;
+  const [submitting, setSubmitting] = useState<boolean>(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoadingData(true);
+    client?.exams_QuestionsFromExam(examId).then(res => {
+      setExam(res.exam);
+      if (!res.exam) throw new Error("Failed to fetch the exam data. Please try again.")
+      if (!res.questions) throw new Error("Failed to generate questions. Please try again.");
+      setQuestions(res.questions);
+      setLoadingData(false);
+    }).catch(console.error);
+  }, []);
 
   type initialValuesType = { [key: string]: string };
   function generateInitialValues(): initialValuesType {
@@ -49,7 +50,7 @@ export function TakeExam(): JSX.Element {
   return (
     <Container width="narrow" className="animate-fade">
       <PageHeading>
-        Exam Name
+        {exam?.title}
       </PageHeading>
       <p className="mt-2 mb-5">
         Welcome to your exam! <br />
@@ -60,7 +61,7 @@ export function TakeExam(): JSX.Element {
         <Form>
           <div>
             {questions.map((q, idx) => (
-              <QuestionCard text={q.text} id={q.id} key={idx} />
+              <QuestionCard text={String(q.text)} id={String(q.id)} key={idx} />
             ))}
           </div>
           <div className="flex justify-center mt-10">
