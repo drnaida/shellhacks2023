@@ -14,7 +14,9 @@ export function Footer(): JSX.Element {
         <div className={rowClasses}>
           <p className="text-darkGray text-center">
             This application was developed by<br />
-            <b>Timur Kalandarov</b>, <b>Anzhelika Kurnikova</b>, and <b>Alvaro Lazaro Aguilar</b><br />
+            <a href="https://www.linkedin.com/in/tkalandarov/" target="_blank" className="font-bold underline">Timur Kalandarov</a>,
+            <a href="https://www.linkedin.com/in/anzhelika-kurnikova/" target="_blank" className="font-bold underline"> Anzhelika Kurnikova</a>, and
+            <a href="https://www.linkedin.com/in/l42aro/" target="_blank" className="font-bold underline"> Alvaro Lazaro Aguilar</a><br />
             for the ShellHacks 2023 hackathon.
           </p>
         </div>
