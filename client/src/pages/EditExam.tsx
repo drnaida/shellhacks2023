@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useEffect, useState } from "react";
 import { ArrowRepeat } from "react-bootstrap-icons";
 import toast from "react-hot-toast";
 import { useOutletContext, useParams } from "react-router-dom";
 import Themes from "../ThemableProps";
-import { Exam, Question, QuestionSingleRequest } from "../api/client";
+import { Exam, Question, QuestionSingleRequest, UpdateExamRequest } from "../api/client";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
@@ -69,6 +70,23 @@ export function EditExam(): JSX.Element {
       toast.error('Unable to regenerate, a server error occured. Please try again.');
     });
   }
+  const initialValues = {}
+
+  const onSubmit = async (values: typeof initialValues) => {
+    const model = new UpdateExamRequest({
+      title: values.examName,
+      questions: questions,
+      topics: keyStatements
+
+    });
+    const promise = client?.exams_UpdateExam(model);
+    toast.promise(promise, genericSavingToast).then(() => {
+      setSubmitting(false);
+      navigate('/Exams/EditExam/:ExamId');
+    }).catch(() => {
+      toast.error('Unable to save changes, a server error occured.');
+    });
+  }
 
   return (
     <>
@@ -77,30 +95,32 @@ export function EditExam(): JSX.Element {
           <Loading text="Loading questions, please wait..." />
         </>}
         {!loadingData && <>
-          <PageHeading>
-            Create Exam
-          </PageHeading>
-          <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 2. Questions for {exam?.title}.</h2>
-          <div className="mt-2 mb-4">
-            <div className="mb-2">
-              Please look at the generated questions. If you want to regenerate a question, click at the "Regenerate Question" button. Submit when you like all of the questions.
-            </div>
-          </div>
-          <div className="flex flex-row flex-wrap mb-3">
-            {questions.map((question: Question) => <Card className="mb-3 hover:shadow-xl">
-              <p className="whitespace-pre-wrap mb-2">
-                {question.text}
-              </p>
-              <div className="w-full flex flex-row justify-end">
-                <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" onClick={(() => {
-                  regenerateQuestion(question);
-                })}><ArrowRepeat className="mr-2 h-4 w-4" /><span>Regenerate Question</span></Button>
+          <Formik initialValues={{}} onSubmit={onSubmit} enableReinitialize>
+            <PageHeading>
+              Create Exam
+            </PageHeading>
+            <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 2. Questions for {exam?.title}.</h2>
+            <div className="mt-2 mb-4">
+              <div className="mb-2">
+                Please look at the generated questions. If you want to regenerate a question, click at the "Regenerate Question" button. Submit when you like all of the questions.
               </div>
-            </Card>)}
-          </div>
-          <div className="flex flex-row justify-center">
-            <Button type="submit" theme={Themes.Primary}>Submit</Button>
-          </div>
+            </div>
+            <div className="flex flex-row flex-wrap mb-3">
+              {questions.map((question: Question) => <Card className="mb-3 hover:shadow-xl">
+                <p className="whitespace-pre-wrap mb-2">
+                  {question.text}
+                </p>
+                <div className="w-full flex flex-row justify-end">
+                  <Button type="button" theme={Themes.Secondary} className="flex items-center mb-[13px]" onClick={(() => {
+                    regenerateQuestion(question);
+                  })}><ArrowRepeat className="mr-2 h-4 w-4" /><span>Regenerate Question</span></Button>
+                </div>
+              </Card>)}
+            </div>
+            <div className="flex flex-row justify-center">
+              <Button type="submit" theme={Themes.Primary}>Submit</Button>
+            </div>
+          </Formik>
         </>}
       </Container>
     </>
