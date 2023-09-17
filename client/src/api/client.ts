@@ -262,7 +262,7 @@ export class Client {
         return Promise.resolve<string[]>(null as any);
     }
 
-    promptEngineering_SingleQuestionGeneration(requestData: QuestionSingleRequest): Promise<string[]> {
+    promptEngineering_SingleQuestionGeneration(requestData: QuestionSingleRequest): Promise<string> {
         let url_ = this.baseUrl + "/api/PromptEngineering/SingleQuestionGeneration";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -282,17 +282,58 @@ export class Client {
         });
     }
 
-    protected processPromptEngineering_SingleQuestionGeneration(response: Response): Promise<string[]> {
+    protected processPromptEngineering_SingleQuestionGeneration(response: Response): Promise<string> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(item);
+                result200 = resultData200 !== undefined ? resultData200 : <any>null;
+    
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<string>(null as any);
+    }
+
+    promptEngineering_BatchAnswerGeneration(requestData: AnswerBatchRequest): Promise<{ [key: string]: string; }> {
+        let url_ = this.baseUrl + "/api/PromptEngineering/BatchAnswerGeneration";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(requestData);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processPromptEngineering_BatchAnswerGeneration(_response);
+        });
+    }
+
+    protected processPromptEngineering_BatchAnswerGeneration(response: Response): Promise<{ [key: string]: string; }> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (resultData200) {
+                result200 = {} as any;
+                for (let key in resultData200) {
+                    if (resultData200.hasOwnProperty(key))
+                        (<any>result200)![key] = resultData200[key] !== undefined ? resultData200[key] : <any>null;
+                }
             }
             else {
                 result200 = <any>null;
@@ -304,7 +345,7 @@ export class Client {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<string[]>(null as any);
+        return Promise.resolve<{ [key: string]: string; }>(null as any);
     }
 
     users_CreateUser(body: CreateUserRequest): Promise<User> {
@@ -509,7 +550,6 @@ export class Exam implements IExam {
     title!: string;
     owner?: User;
     ownerId?: string;
-    questions?: Question[];
     topics?: string[];
 
     constructor(data?: IExam) {
@@ -527,11 +567,6 @@ export class Exam implements IExam {
             this.title = _data["title"];
             this.owner = _data["owner"] ? User.fromJS(_data["owner"]) : <any>undefined;
             this.ownerId = _data["ownerId"];
-            if (Array.isArray(_data["questions"])) {
-                this.questions = [] as any;
-                for (let item of _data["questions"])
-                    this.questions!.push(Question.fromJS(item));
-            }
             if (Array.isArray(_data["topics"])) {
                 this.topics = [] as any;
                 for (let item of _data["topics"])
@@ -553,11 +588,6 @@ export class Exam implements IExam {
         data["title"] = this.title;
         data["owner"] = this.owner ? this.owner.toJSON() : <any>undefined;
         data["ownerId"] = this.ownerId;
-        if (Array.isArray(this.questions)) {
-            data["questions"] = [];
-            for (let item of this.questions)
-                data["questions"].push(item.toJSON());
-        }
         if (Array.isArray(this.topics)) {
             data["topics"] = [];
             for (let item of this.topics)
@@ -572,7 +602,6 @@ export interface IExam {
     title: string;
     owner?: User;
     ownerId?: string;
-    questions?: Question[];
     topics?: string[];
 }
 
@@ -614,54 +643,6 @@ export class User implements IUser {
 export interface IUser {
     id?: string;
     name: string;
-}
-
-export class Question implements IQuestion {
-    id?: string;
-    text?: string;
-    exam?: Exam;
-    examId?: string;
-
-    constructor(data?: IQuestion) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.id = _data["id"];
-            this.text = _data["text"];
-            this.exam = _data["exam"] ? Exam.fromJS(_data["exam"]) : <any>undefined;
-            this.examId = _data["examId"];
-        }
-    }
-
-    static fromJS(data: any): Question {
-        data = typeof data === 'object' ? data : {};
-        let result = new Question();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["text"] = this.text;
-        data["exam"] = this.exam ? this.exam.toJSON() : <any>undefined;
-        data["examId"] = this.examId;
-        return data;
-    }
-}
-
-export interface IQuestion {
-    id?: string;
-    text?: string;
-    exam?: Exam;
-    examId?: string;
 }
 
 export class ExamDTO implements IExamDTO {
@@ -710,6 +691,54 @@ export class ExamDTO implements IExamDTO {
 export interface IExamDTO {
     exam?: Exam;
     questions?: Question[];
+}
+
+export class Question implements IQuestion {
+    id?: string;
+    text?: string;
+    exam?: Exam;
+    examId?: string;
+
+    constructor(data?: IQuestion) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.text = _data["text"];
+            this.exam = _data["exam"] ? Exam.fromJS(_data["exam"]) : <any>undefined;
+            this.examId = _data["examId"];
+        }
+    }
+
+    static fromJS(data: any): Question {
+        data = typeof data === 'object' ? data : {};
+        let result = new Question();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["text"] = this.text;
+        data["exam"] = this.exam ? this.exam.toJSON() : <any>undefined;
+        data["examId"] = this.examId;
+        return data;
+    }
+}
+
+export interface IQuestion {
+    id?: string;
+    text?: string;
+    exam?: Exam;
+    examId?: string;
 }
 
 export class CreateExamRequest implements ICreateExamRequest {
@@ -911,6 +940,66 @@ export interface IQuestionSingleRequest {
     topics?: string[];
     question?: string;
     model?: string;
+}
+
+export class AnswerBatchRequest implements IAnswerBatchRequest {
+    answers?: { [key: string]: string; };
+    saveAnswer?: boolean | undefined;
+    studentId?: string | undefined;
+    model?: string | undefined;
+
+    constructor(data?: IAnswerBatchRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (_data["answers"]) {
+                this.answers = {} as any;
+                for (let key in _data["answers"]) {
+                    if (_data["answers"].hasOwnProperty(key))
+                        (<any>this.answers)![key] = _data["answers"][key];
+                }
+            }
+            this.saveAnswer = _data["saveAnswer"];
+            this.studentId = _data["studentId"];
+            this.model = _data["model"];
+        }
+    }
+
+    static fromJS(data: any): AnswerBatchRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new AnswerBatchRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (this.answers) {
+            data["answers"] = {};
+            for (let key in this.answers) {
+                if (this.answers.hasOwnProperty(key))
+                    (<any>data["answers"])[key] = (<any>this.answers)[key];
+            }
+        }
+        data["saveAnswer"] = this.saveAnswer;
+        data["studentId"] = this.studentId;
+        data["model"] = this.model;
+        return data;
+    }
+}
+
+export interface IAnswerBatchRequest {
+    answers?: { [key: string]: string; };
+    saveAnswer?: boolean | undefined;
+    studentId?: string | undefined;
+    model?: string | undefined;
 }
 
 export class CreateUserRequest implements ICreateUserRequest {

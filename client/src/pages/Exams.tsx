@@ -13,7 +13,7 @@ import exam2 from '../assets/exams/exam2.svg';
 import exam3 from '../assets/exams/exam3.svg';
 import exam4 from '../assets/exams/exam4.svg';
 import exam5 from '../assets/exams/exam5.svg';
-import { UserContextProps } from "../components/ContextProvider";
+import { AuthContext } from "../components/ContextProvider";
 import { Loading } from "../components/Loading";
 
 const svgFiles = [exam1, exam2, exam3, exam4, exam5];
@@ -38,15 +38,14 @@ export function Exams(): JSX.Element {
       id: '12345679'
     },
   ];
-  const { client }: UserContextProps = useOutletContext();
+  const { client, user }: AuthContext = useOutletContext();
   const navigate = useNavigate();
   const [exams, setExams] = useState<Exam[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const id = '123456';
 
   useEffect(() => {
     setLoading(true);
-    client?.exams_AllExams(id).then(res => {
+    client?.exams_AllExams(user?.id).then(res => {
       setExams(res);
       setLoading(false);
     }).catch(console.error);
