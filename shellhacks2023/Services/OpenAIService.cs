@@ -51,7 +51,7 @@ namespace shellhacks2023.Services
             {
                 Model = Model.ChatGPTTurbo,
                 Temperature = 0.1,
-                MaxTokens = 100,
+                MaxTokens = 300,
                 Messages = new ChatMessage[] {
                     new ChatMessage(ChatMessageRole.User, chatMessage)
                 }
