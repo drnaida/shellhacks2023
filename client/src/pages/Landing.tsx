@@ -1,5 +1,6 @@
 import { EyeFill, PencilFill, PlusCircleFill, TrashFill, PeopleFill, CpuFill, DpadFill} from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer";
 
 
 export function Landing(): JSX.Element {
@@ -51,9 +52,13 @@ export function Landing(): JSX.Element {
                     </div>
                 </div>
 
-                <div className="flex space-x-4 my-32 bg-gray-800 text-xl w-full justify-center items-center">
-                    <button className="text-white px-5 py-2 hover:bg-white hover:text-black">Sign Up</button>
-                    <button className=" text-white px-5 py-2 hover:bg-white hover:text-black">Login</button>
+                <div className="flex space-x-4 my-32 text-xl w-full justify-center items-center">
+                    <button className="text-white px-5 py-2 border-2 border-white hover:bg-white hover:text-black">Sign Up</button>
+                    <button className=" text-white px-5 py-2 hover:bg-white border-2 border-white hover:text-black">Login</button>
+                </div>
+                <div className="w-full h-auto bg-white">
+                <Footer />
+
                 </div>
             </div>
         </div>
