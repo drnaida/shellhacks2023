@@ -8,13 +8,14 @@ import { EditExam } from "./pages/EditExam";
 import { Exams } from "./pages/Exams";
 import { GenerateExam } from "./pages/GenerateExam";
 import { TakeExam } from "./pages/TakeExam";
+import { Landing } from "./pages/Landing";
 
 const STRICT = true;
 
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path='' element={<ContextProvider />}>
-      <Route path='/' element={<Navigate to="/Exams" />} />
+      <Route path='/' element={<Landing/>} />
       <Route path='/Auth' element={<Auth />} />
       <Route path='/Exams' element={<Exams />} />
       <Route path='/Exams/EditExam/:ExamId' element={<EditExam />} />
