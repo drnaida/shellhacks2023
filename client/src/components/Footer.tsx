@@ -10,13 +10,13 @@ export function Footer(): JSX.Element {
 
   return (
     <footer className="mt-auto">
-      <div className="flex flex-col items-center mt-10">
+      <div className="flex flex-col items-center mt-10 py-4">
         <div className={rowClasses}>
           <p className="text-darkGray text-center">
             This application was developed by<br />
-            <a href="https://www.linkedin.com/in/tkalandarov/" target="_blank" className="font-bold underline">Timur Kalandarov</a>,
-            <a href="https://www.linkedin.com/in/anzhelika-kurnikova/" target="_blank" className="font-bold underline"> Anzhelika Kurnikova</a>, and
-            <a href="https://www.linkedin.com/in/l42aro/" target="_blank" className="font-bold underline"> Alvaro Lazaro Aguilar</a><br />
+            <Link to="https://www.linkedin.com/in/tkalandarov/" theme={Themes.Primary} target="_blank">Timur Kalandarov</Link>,
+            <Link to="https://www.linkedin.com/in/anzhelika-kurnikova/" theme={Themes.Primary} target="_blank"> Anzhelika Kurnikova</Link>, and
+            <Link to="https://www.linkedin.com/in/l42aro/" theme={Themes.Primary} target="_blank"> Alvaro Lazaro Aguilar</Link><br />
             for the ShellHacks 2023 hackathon.
           </p>
         </div>

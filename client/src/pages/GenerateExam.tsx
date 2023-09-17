@@ -24,12 +24,10 @@ export function GenerateExam(): JSX.Element {
         <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Add keywords.</h2>
         <div className="mt-2 mb-4">
           <div className="mb-2">
-            Please use the form below to enter your exam name, number of questions that you need, and Exam topics.
+            Use the form below to name your exam, specify the number of questions you need, and add exam topics.
           </div>
           <div>
-            For example, if you are creating a physics exam, you could write "Photoelectric effect relation with the ultraviolet catastrophe" as one of the
-            exams topics, press "Add Exam Topic" button, and then write "Newton's First Law of Motion" as another exam topic and press "Add Exam Topic" button.
-          </div>
+            For each topic you wish to include in your exam, input it into the field below and click "Add Exam Topic." Continue this process for each topic you'd like to include in your exam.          </div>
         </div>
         <CreatExamForm />
       </Container>
