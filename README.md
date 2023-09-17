@@ -2,7 +2,14 @@
 
 Project to revolutionize educational examinations. 📝 😄
 
+## Technologies
+Backend: C#, ASP.Net, CockRoachDB
+Frontend: TypeScript, JavaScript, React.js, Tailwind, 
+Infrastructure: Docker
+
 ## Formating Git 🙀
+
+Install the Editor Config plugin for VSCode/VS/whichever editor you are using. This will ensure line-endings and indentations are formatted correctly when saving.
 
 ### For branches:
 
@@ -42,6 +49,33 @@ Once data context has been modified, open a terminal on the root of the project 
 If the above succeed then run
 
     > dotnet ef database update
+
+## Get Started 
+
+### Requirements
+
+- Visual Studio 2022
+- .NET 6 / ASP.NET 6 Workload
+- Yarn
+- Node
+
+### Local Development Frontend
+
+1. Install prerequirements from the root of repository:
+
+    yarn run i
+
+2. Run code locally:
+    
+    yarn start-local --no-cache
+
+### Local Development Backend
+
+1. Run the project solution in the Visual Studio
+
+2. To describe the structure of API for Frontend (while local server in Visual Studio is turned off):
+
+    yarn run nswag run /runtime:Net60
 
 ## How to deploy 🚀
 
