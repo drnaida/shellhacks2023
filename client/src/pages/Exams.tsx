@@ -1,22 +1,26 @@
 import { EyeFill, PencilFill, PlusCircleFill } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
 import { PageHeading } from "../components/PageHeading";
 
+import { useEffect, useState } from "react";
+import { Exam } from "../api/client";
 import exam1 from '../assets/exams/exam1.svg';
 import exam2 from '../assets/exams/exam2.svg';
 import exam3 from '../assets/exams/exam3.svg';
 import exam4 from '../assets/exams/exam4.svg';
 import exam5 from '../assets/exams/exam5.svg';
+import { UserContextProps } from "../components/ContextProvider";
+import { Loading } from "../components/Loading";
 
 const svgFiles = [exam1, exam2, exam3, exam4, exam5];
 
 
 export function Exams(): JSX.Element {
-  const exams = [
+  const examsMock = [
     {
       name: 'Exam 1. Microbiology and cellucar molecular biology',
       id: '12345678'
@@ -34,10 +38,26 @@ export function Exams(): JSX.Element {
       id: '12345679'
     },
   ];
+  const { client }: UserContextProps = useOutletContext();
   const navigate = useNavigate();
+  const [exams, setExams] = useState<Exam[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const id = '123456';
+
+  useEffect(() => {
+    setLoading(true);
+    client?.exams_AllExams(id).then(res => {
+      setExams(res);
+      setLoading(false);
+    }).catch(console.error);
+  }, []);
 
   return (
-      <Container width="narrow" className="animate-fade">
+    <Container width="narrow" className="animate-fade">
+      {loading && <>
+        <Loading text="Loading exams, please wait..." />
+      </>}
+      {!loading && <>
         <PageHeading>
           Your Exams
         </PageHeading>
@@ -52,9 +72,10 @@ export function Exams(): JSX.Element {
 
         <div>
           {exams.map((exam) => (
-            <ExamCard name={exam.name} id={exam.id} />
+            <ExamCard name={exam.title} id={exam.id!} />
           ))}
         </div>
+      </>}
     </Container>
   )
 }
