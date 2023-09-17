@@ -187,7 +187,7 @@ export class Client {
 
         let options_: RequestInit = {
             body: content_,
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"

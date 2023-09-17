@@ -81,7 +81,7 @@ namespace shellhacks2023.Controllers
             await _dataContext.SaveChangesAsync();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("UpdateExam")]
         public async Task<ActionResult<Exam>> UpdateExam([FromBody] UpdateExamRequest body)
         {
