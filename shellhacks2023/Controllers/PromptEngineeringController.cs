@@ -82,10 +82,10 @@ namespace shellhacks2023.Controllers
             {
                 Guid question_id = answer.Key;
                 var question = db.Questions.Where(q=>q.Id==question_id).FirstOrDefaultAsync().Result.Text;
-                questions_string += question_id + " - " + question + "\n";
-                answers_string += question_id + " - " + answer.Value + "\n";
-                /*idx_dict.Add(idx.ToString(), question_id);
-                idx++;*/
+                questions_string += idx + " : " + question + "\n";
+                answers_string += idx + " : " + answer.Value + "\n";
+                idx_dict.Add(idx.ToString(), question_id);
+                idx++;
             }
 
             var context = $"A student is being evaluated. They were just asked the following questions:\n {questions_string}. And they had the following ansswers:\n{answers_string}";
@@ -104,7 +104,7 @@ namespace shellhacks2023.Controllers
                 var text = match.Groups[1].Value;
                 var regex = new Regex(":::");
                 var content = regex.Split(text);
-                var q_id = new Guid(content[0].Trim()); // idx_dict[content[0]];
+                var q_id = idx_dict[(content[0].Trim())]; // idx_dict[content[0]];
                 var eval = content[1];
                 evaluations.Add(q_id, eval);
             }
