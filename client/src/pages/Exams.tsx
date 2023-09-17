@@ -45,7 +45,7 @@ export function Exams(): JSX.Element {
         </PageHeading>
         <div className="mt-2 mb-6 flex flex-row justify-between w-full">
           <p>
-            Please use the list below to create, edit or preview as a student your exams.
+            Please use the list below to generate or modify your exams, or view them from a student perspective
           </p>
           <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/CreateExam`)}>
             <PlusCircleFill className="h-4 w-4 mr-2" /><span>New Exam</span>

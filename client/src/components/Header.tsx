@@ -24,7 +24,7 @@ export function Header({ user, setUser, logout }: HeaderProps): JSX.Element {
       <Link to="/" theme={Themes.Nav}>
         <div className="flex flex-row items-center">
           <img src={logo} alt="logo" width={64} height={64} />
-          <h1 className="text-3xl font-bold text-darkGray ml-3">Some awesome name</h1>
+          <h1 className="text-3xl font-bold text-darkGray ml-3">QuizWhiz AI</h1>
         </div>
       </Link>
 
