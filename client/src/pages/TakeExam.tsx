@@ -11,7 +11,7 @@ import { AuthContext } from "../components/ContextProvider";
 import { Loading } from "../components/Loading";
 import { PageHeading } from "../components/PageHeading";
 import { TextAreaField } from "../components/TextArea";
-import { genericSavingToast } from "../helpers/toastHelpers";
+import { answersCheckedToast } from "../helpers/toastHelpers";
 
 type answersType = { [key: string]: string };
 
@@ -55,14 +55,13 @@ export function TakeExam(): JSX.Element {
     });
     console.log(values);
     const promise = client!.promptEngineering_BatchAnswerGeneration(data);
-    toast.promise(promise, genericSavingToast).then((res) => {
-      console.log('return', res);
+    toast.promise(promise, answersCheckedToast).then((res) => {
       setModelAnswers(res);
       setStudentAnswers(values);
       setEvaluated(true);
       setSubmitting(false);
     }).catch(() => {
-      toast.error('Unable to save changes, a server error occured.');
+      toast.error('Unable to check questions, a server error occured.');
       setSubmitting(false);
     });
   }
