@@ -1,12 +1,15 @@
 import { Form, Formik } from "formik";
+import { useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
+import { UserContextProps } from "../components/ContextProvider";
 import { PageHeading } from "../components/PageHeading";
 import { TextAreaField } from "../components/TextArea";
 
 export function TakeExam(): JSX.Element {
+  const { client }: UserContextProps = useOutletContext();
   const questions = [
     {
       text: 'Q1 Text',
