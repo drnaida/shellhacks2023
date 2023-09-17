@@ -32,13 +32,18 @@ export function ContextProvider() {
   const loggedIn = user !== null;
 
   useEffect(() => {
-    if(location.pathname == "/Auth" || location.pathname == "/") return;
     const storedUser = localStorage.getItem("user");
-    if (!storedUser) {
+    if (!storedUser && location.pathname != "/Auth" && location.pathname != "/") {
       navigate("/Auth");
-    } else if (storedUser && !user) {
-      // If you have stored the user data as a stringified JSON, you can parse it like so:
-      setUser(JSON.parse(storedUser));
+    } else if (storedUser) {
+      if(!user) {
+        // If you have stored the user data as a stringified JSON, you can parse it like so:
+        setUser(JSON.parse(storedUser));
+      }
+      //If location is /Auth or /, redirect to /Exams
+      if(location.pathname == "/Auth" || location.pathname == "/") {
+        navigate("/Exams");
+      }
     }
   }, [user, navigate, location]);
   const logout = () => {
