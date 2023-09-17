@@ -56,8 +56,10 @@ function CreatExamForm(): JSX.Element {
       topics: keyStatements
     });
     console.log(data);
-
+    const toastId = toast.loading('Generating questions...');
     client?.promptEngineering_BatchQuestionGeneration(data).then(questions => {
+      toast.dismiss(toastId);
+      toast.success('Questions were generated.');
       const model = new CreateExamRequest({
         title: values.examName,
         questions: questions,
