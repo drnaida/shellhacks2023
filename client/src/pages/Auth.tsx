@@ -31,8 +31,10 @@ export function Auth(): JSX.Element {
         .catch(e => console.log(`Failed to create new user: ${e}`));
     }
 
-    setUser(user!);
-    navigate(`/`);
+    if (user) {
+      setUser(user);
+      navigate(`/`);
+    }
   }
 
   const cardClasses = classNames(

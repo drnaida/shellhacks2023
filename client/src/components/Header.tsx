@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { PersonFill } from "react-bootstrap-icons";
+import { DoorOpenFill, PersonFill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { User } from "../api/client";
@@ -9,7 +9,7 @@ import { Link } from "./Link";
 
 declare interface HeaderProps {
   user: User | undefined;
-  setUser: React.Dispatch<User>;
+  setUser: React.Dispatch<User | undefined>;
 }
 
 export function Header({ user, setUser }: HeaderProps): JSX.Element {
@@ -33,7 +33,14 @@ export function Header({ user, setUser }: HeaderProps): JSX.Element {
             <PersonFill className={iconClasses} />
             <span className="ml-1">Log in</span>
           </Button>}
-        {user && <span>Hello, {user?.name}!</span>}
+        {user &&
+          <div className="flex items-center">
+            <span className="mr-6 font-semibold text-darkGray text-xl">Hi, {user.name}!</span>
+            <Button theme={Themes.Info} className="flex items-center" onClick={() => setUser(undefined)}>
+              <DoorOpenFill className={iconClasses} />
+              <span className="ml-1">Sign out</span>
+            </Button>
+          </div>}
       </div>
     </header>
   )
