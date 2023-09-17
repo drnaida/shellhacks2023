@@ -21,7 +21,7 @@ export function GenerateExam(): JSX.Element {
         <PageHeading>
           Create Exam
         </PageHeading>
-        <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Part 1. Add keywords.</h2>
+        <h2 className="text-2xl font-bold text-darkGray mb-3 mt-4">Add keywords.</h2>
         <div className="mt-2 mb-4">
           <div className="mb-2">
             Please use the form below to enter your exam name, number of questions that you need, and Exam topics.
@@ -71,9 +71,11 @@ function CreatExamForm(): JSX.Element {
         navigate(`/Exams/EditExam/${exam.id}`);
       }).catch(() => {
         toast.error('Unable to save changes, a server error occured.');
+        setSubmitting(false);
       });
     }).catch(() => {
       toast.error('Failed to create questions. Please try changing Exam Topics.');
+      setSubmitting(false);
     }
     );
   };
