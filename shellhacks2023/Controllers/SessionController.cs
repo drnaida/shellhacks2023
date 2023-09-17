@@ -19,7 +19,7 @@ namespace shellhacks2023.Controllers
         [Route("GetSessionsByExam")]
         public async Task<ActionResult<List<Session>>> GetSessionsByExam(Guid examId)
         {
-            var sessions = await db.Sessions.Where(s => s.ExamId==examId).Include(s=>s.Exam).ToListAsync();
+            var sessions = await db.Sessions.Where(s => s.ExamId==examId).Include(s=>s.Exam).Include(s=>s.Student).ToListAsync();
 
             if (sessions.Count==0)
             {
@@ -60,6 +60,38 @@ namespace shellhacks2023.Controllers
 
             }
             return Ok(ans_list);
+        }
+
+        [HttpGet]
+        [Route("GetSessionStats")]
+        public async Task<ActionResult<SessionStatsDTO>> GetSessionStats(Guid sessionId)
+        {
+            var ans_list = await db.Answers.Where(a=> a.SessionId == sessionId).ToListAsync();
+
+            if (ans_list.Count==0)
+                return NotFound(nameof(sessionId));
+
+            var status = "confident";
+            var correct = 0;
+            foreach (var answer in ans_list)
+            {
+                if (answer.Feedback.ToLower().Contains("unsure"))
+                {
+                    status = "not confident";
+                }
+                if (answer.Feedback.ToLower().Contains("correct") && !answer.Feedback.ToLower().Contains("correct"))
+                {
+                    correct++;
+                }
+                
+            }
+            float grade = correct/ans_list.Count()*100;
+            var stats = new SessionStatsDTO
+            {
+                grade = grade,
+                status = status
+            };
+            return Ok(stats);
         }
     }
 }

@@ -9,6 +9,8 @@ import { Exams } from "./pages/Exams";
 import { GenerateExam } from "./pages/GenerateExam";
 import { TakeExam } from "./pages/TakeExam";
 import { Landing } from "./pages/Landing";
+import { CheckAnswers } from "./pages/CheckAnswers";
+import { ValidateAnswers } from "./pages/ValidateAnswers";
 
 const STRICT = true;
 
@@ -21,6 +23,8 @@ const router = createHashRouter(
       <Route path='/Exams/EditExam/:ExamId' element={<EditExam />} />
       <Route path='/Exams/CreateExam' element={<GenerateExam />} />
       <Route path='/Exams/Student/:ExamId' element={<TakeExam />} />
+      <Route path='/Exams/Answers/:ExamId' element={<CheckAnswers />} />
+      <Route path='/Exams/ValidateAnswer/:SubmissionId' element={<ValidateAnswers />} />
     </Route>
   )
 );

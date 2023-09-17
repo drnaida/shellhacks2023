@@ -1,4 +1,4 @@
-import { EyeFill, PencilFill, PlusCircleFill } from "react-bootstrap-icons";
+import { EyeFill, PencilFill, PlusCircleFill, Link45deg,Check2Square } from "react-bootstrap-icons";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
 import { Button } from "../components/Button";
@@ -90,8 +90,9 @@ export function ExamCard({ name, id }: ExamCardProps): JSX.Element {
         </div>
         <div className="w-2/6 flex flex-col justify-center items-end">
           <div>
-            <Button type="button" theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Exams/EditExam/${id}`)}><PencilFill className="h-4 w-4 mr-2" /><span>Edit</span></Button>
-            <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/Student/${id}`)}><EyeFill className="h-4 w-4 mr-2" /><span>View</span></Button>
+            <Button type="button" theme={Themes.Secondary} className="flex items-center" onClick={() => navigate(`/Exams/EditExam/${id}`)}><PencilFill className="h-full" /></Button>
+            <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/Student/${id}`)}><EyeFill className="h-full" /></Button>
+            <Button type="button" theme={Themes.Primary} className="flex items-center" onClick={() => navigate(`/Exams/Answers/${id}`)}><Check2Square className="h-full" /></Button>
             {/* Create button to copy a link of the format https://{current_url}/student/{exam_id} */}
             <Button type="button" theme={Themes.Primary} className="flex items-center" title="Copy Link for Students" onClick={() => {
               //Copy to clipboard

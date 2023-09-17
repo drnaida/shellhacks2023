@@ -348,6 +348,172 @@ export class Client {
         return Promise.resolve<{ [key: string]: string; }>(null as any);
     }
 
+    session_GetSessionsByExam(examId: string | undefined): Promise<Session[]> {
+        let url_ = this.baseUrl + "/api/Session/GetSessionsByExam?";
+        if (examId === null)
+            throw new Error("The parameter 'examId' cannot be null.");
+        else if (examId !== undefined)
+            url_ += "examId=" + encodeURIComponent("" + examId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSession_GetSessionsByExam(_response);
+        });
+    }
+
+    protected processSession_GetSessionsByExam(response: Response): Promise<Session[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Session.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Session[]>(null as any);
+    }
+
+    session_GetAnswersBySession(sessionId: string | undefined): Promise<Answer[]> {
+        let url_ = this.baseUrl + "/api/Session/GetAnswersBySession?";
+        if (sessionId === null)
+            throw new Error("The parameter 'sessionId' cannot be null.");
+        else if (sessionId !== undefined)
+            url_ += "sessionId=" + encodeURIComponent("" + sessionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSession_GetAnswersBySession(_response);
+        });
+    }
+
+    protected processSession_GetAnswersBySession(response: Response): Promise<Answer[]> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Answer.fromJS(item));
+            }
+            else {
+                result200 = <any>null;
+            }
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Answer[]>(null as any);
+    }
+
+    session_UpdateSessionFeedback(requestData: UpdateSessionRequest): Promise<Session> {
+        let url_ = this.baseUrl + "/api/Session/UpdateSessionFeedback";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(requestData);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSession_UpdateSessionFeedback(_response);
+        });
+    }
+
+    protected processSession_UpdateSessionFeedback(response: Response): Promise<Session> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = Session.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<Session>(null as any);
+    }
+
+    session_GetSessionStats(sessionId: string | undefined): Promise<SessionStatsDTO> {
+        let url_ = this.baseUrl + "/api/Session/GetSessionStats?";
+        if (sessionId === null)
+            throw new Error("The parameter 'sessionId' cannot be null.");
+        else if (sessionId !== undefined)
+            url_ += "sessionId=" + encodeURIComponent("" + sessionId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processSession_GetSessionStats(_response);
+        });
+    }
+
+    protected processSession_GetSessionStats(response: Response): Promise<SessionStatsDTO> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = SessionStatsDTO.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<SessionStatsDTO>(null as any);
+    }
+
     users_CreateUser(body: CreateUserRequest): Promise<User> {
         let url_ = this.baseUrl + "/api/Users/CreateUser";
         url_ = url_.replace(/[?&]$/, "");
@@ -1000,6 +1166,210 @@ export interface IAnswerBatchRequest {
     saveAnswer?: boolean | undefined;
     studentId?: string | undefined;
     model?: string | undefined;
+}
+
+export class Session implements ISession {
+    id?: string;
+    student?: User;
+    studentId?: string;
+    exam?: Exam;
+    examId?: string;
+
+    constructor(data?: ISession) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.student = _data["student"] ? User.fromJS(_data["student"]) : <any>undefined;
+            this.studentId = _data["studentId"];
+            this.exam = _data["exam"] ? Exam.fromJS(_data["exam"]) : <any>undefined;
+            this.examId = _data["examId"];
+        }
+    }
+
+    static fromJS(data: any): Session {
+        data = typeof data === 'object' ? data : {};
+        let result = new Session();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["student"] = this.student ? this.student.toJSON() : <any>undefined;
+        data["studentId"] = this.studentId;
+        data["exam"] = this.exam ? this.exam.toJSON() : <any>undefined;
+        data["examId"] = this.examId;
+        return data;
+    }
+}
+
+export interface ISession {
+    id?: string;
+    student?: User;
+    studentId?: string;
+    exam?: Exam;
+    examId?: string;
+}
+
+export class Answer implements IAnswer {
+    id?: string;
+    session?: Session;
+    sessionId?: string;
+    text?: string;
+    feedback?: string;
+    question?: Question;
+    questionId?: string;
+
+    constructor(data?: IAnswer) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.session = _data["session"] ? Session.fromJS(_data["session"]) : <any>undefined;
+            this.sessionId = _data["sessionId"];
+            this.text = _data["text"];
+            this.feedback = _data["feedback"];
+            this.question = _data["question"] ? Question.fromJS(_data["question"]) : <any>undefined;
+            this.questionId = _data["questionId"];
+        }
+    }
+
+    static fromJS(data: any): Answer {
+        data = typeof data === 'object' ? data : {};
+        let result = new Answer();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["session"] = this.session ? this.session.toJSON() : <any>undefined;
+        data["sessionId"] = this.sessionId;
+        data["text"] = this.text;
+        data["feedback"] = this.feedback;
+        data["question"] = this.question ? this.question.toJSON() : <any>undefined;
+        data["questionId"] = this.questionId;
+        return data;
+    }
+}
+
+export interface IAnswer {
+    id?: string;
+    session?: Session;
+    sessionId?: string;
+    text?: string;
+    feedback?: string;
+    question?: Question;
+    questionId?: string;
+}
+
+export class UpdateSessionRequest implements IUpdateSessionRequest {
+    sessionId?: string | undefined;
+    answerFeedback?: { [key: string]: string; };
+
+    constructor(data?: IUpdateSessionRequest) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.sessionId = _data["sessionId"];
+            if (_data["answerFeedback"]) {
+                this.answerFeedback = {} as any;
+                for (let key in _data["answerFeedback"]) {
+                    if (_data["answerFeedback"].hasOwnProperty(key))
+                        (<any>this.answerFeedback)![key] = _data["answerFeedback"][key];
+                }
+            }
+        }
+    }
+
+    static fromJS(data: any): UpdateSessionRequest {
+        data = typeof data === 'object' ? data : {};
+        let result = new UpdateSessionRequest();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["sessionId"] = this.sessionId;
+        if (this.answerFeedback) {
+            data["answerFeedback"] = {};
+            for (let key in this.answerFeedback) {
+                if (this.answerFeedback.hasOwnProperty(key))
+                    (<any>data["answerFeedback"])[key] = (<any>this.answerFeedback)[key];
+            }
+        }
+        return data;
+    }
+}
+
+export interface IUpdateSessionRequest {
+    sessionId?: string | undefined;
+    answerFeedback?: { [key: string]: string; };
+}
+
+export class SessionStatsDTO implements ISessionStatsDTO {
+    status?: string;
+    grade?: number;
+
+    constructor(data?: ISessionStatsDTO) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.status = _data["status"];
+            this.grade = _data["grade"];
+        }
+    }
+
+    static fromJS(data: any): SessionStatsDTO {
+        data = typeof data === 'object' ? data : {};
+        let result = new SessionStatsDTO();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["status"] = this.status;
+        data["grade"] = this.grade;
+        return data;
+    }
+}
+
+export interface ISessionStatsDTO {
+    status?: string;
+    grade?: number;
 }
 
 export class CreateUserRequest implements ICreateUserRequest {
