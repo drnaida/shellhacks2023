@@ -1,14 +1,18 @@
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import { PlusLg, TrashFill } from "react-bootstrap-icons";
-import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Themes from "../ThemableProps";
+import { CreateExamRequest, QuestionBatchRequest } from "../api/client";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { Container } from "../components/Container";
+import { UserContextProps } from "../components/ContextProvider";
 import { NumericField } from "../components/NumericField";
 import { PageHeading } from "../components/PageHeading";
 import { TextField } from "../components/TextField";
+import { genericSavingToast } from "../helpers/toastHelpers";
 
 export function GenerateExam(): JSX.Element {
   return (
@@ -44,22 +48,33 @@ function CreatExamForm(): JSX.Element {
     questionsNumber: '',
     keywords: ''
   }
-
+  const { client }: UserContextProps = useOutletContext();
   const onSubmit = async (values: typeof initialValues) => {
     setSubmitting(true);
-    const data = {
-      examName: values.examName,
-      questionsNumber: values.questionsNumber,
-      keywords: keyStatements
-    }
+    const data = new QuestionBatchRequest({
+      qNumber: Number(values.questionsNumber),
+      topics: keyStatements
+    });
     console.log(data);
 
-    //TODO: code that sends the keywords to backend
+    client?.promptEngineering_BatchQuestionGeneration(data).then(questions => {
+      const model = new CreateExamRequest({
+        title: values.examName,
+        questions: questions,
+        topics: keyStatements
 
-    // toast.promise(promise, genericSavingToast).then(() => {
-    //   setSubmitting(false);
-    // }).catch(console.error);
-    navigate('/Exams/EditExam/:ExamId');
+      });
+      const promise = client?.exams_CreateExam(model);
+      toast.promise(promise, genericSavingToast).then(() => {
+        setSubmitting(false);
+        navigate('/Exams/EditExam/:ExamId');
+      }).catch(() => {
+        toast.error('Unable to save changes, a server error occured.');
+      });
+    }).catch(() => {
+      toast.error('Failed to create questions. Please try changing Exam Topics.');
+    }
+    );
   };
 
   return (
