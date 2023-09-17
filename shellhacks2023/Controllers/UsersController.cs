@@ -9,21 +9,18 @@ namespace shellhacks2023.Controllers
     [ApiController]
     public class UsersController : Controller
     {
-        private DataContext db;
-        public UsersController(DataContext db)
+        private readonly DataContext _dataContext;
+        public UsersController(DataContext dataContext)
         {
-            this.db = db;
+            _dataContext = dataContext;
         }
+
         [HttpPost]
         [Route("CreateUser")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest body)
+        public async Task<ActionResult<User>> CreateUser([FromBody] CreateUserRequest body)
         {
-            if (body == null)
-            {
-                throw new ArgumentNullException(nameof(body));
-            }
             //Check if user is unique
-            var usernameExists = await db.Users.AnyAsync(u=> u.Name == body.UserName);
+            var usernameExists = await _dataContext.Users.AnyAsync(u => u.Name == body.UserName);
             if (usernameExists)
             {
                 return Conflict("Username Already Exists");
@@ -35,10 +32,24 @@ namespace shellhacks2023.Controllers
             {
                 Name = body.UserName
             };
-            await db.Users.AddAsync(user);
-            await db.SaveChangesAsync();
 
-            return Ok(user.Id);
+            await _dataContext.Users.AddAsync(user);
+            await _dataContext.SaveChangesAsync();
+
+            return user;
+        }
+
+        [HttpGet]
+        [Route("GetUser")]
+        public async Task<ActionResult<User>> GetUser(Guid id)
+        {
+            var user = await _dataContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return user;
         }
     }
 }
