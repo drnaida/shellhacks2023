@@ -16,7 +16,7 @@ export function Landing(): JSX.Element {
                       <i>SOME AWESOME NAME</i>
                   </h1>
                   Welcome to the future of exams
-                <button className="text-white text-[20px] px-5 py-2 my-5 hover:bg-white hover:text-black border-2 border-white" onClick={() => navigate('/Exams')}>Get Started</button>
+                <button className="text-white text-[20px] px-5 py-2 my-5 hover:bg-white hover:text-black border-2 border-white" onClick={() => navigate('/Auth')}>Get Started</button>
                 </div>
 
                 <div className="space-y-6 my-5 relative">
@@ -53,8 +53,8 @@ export function Landing(): JSX.Element {
                 </div>
 
                 <div className="flex space-x-4 my-32 text-xl w-full justify-center items-center">
-                    <button className="text-white px-5 py-2 border-2 border-white hover:bg-white hover:text-black">Sign Up</button>
-                    <button className=" text-white px-5 py-2 hover:bg-white border-2 border-white hover:text-black">Login</button>
+                    <button className="text-white px-5 py-2 border-2 border-white hover:bg-white hover:text-black" onClick={() => navigate('/Auth')}>Sign Up</button>
+                    <button className=" text-white px-5 py-2 hover:bg-white border-2 border-white hover:text-black" onClick={() => navigate('/Auth')}>Login</button>
                 </div>
                 <div className="w-full h-auto bg-white">
                 <Footer />
