@@ -99,18 +99,13 @@ namespace shellhacks2023.Controllers
             var result_pattern = @"-<- (.+?) ->-";
             var evaluations = new Dictionary<Guid, string>();
             MatchCollection matches = Regex.Matches(response, result_pattern);
-            var status = "Confident";
             foreach (Match match in matches)
             {
                 var text = match.Groups[1].Value;
                 var regex = new Regex(":::");
                 var content = regex.Split(text);
                 var q_id = idx_dict[(content[0].Trim())]; // idx_dict[content[0]];
-                var eval = content[1];
-                if(eval.ToLower() == "unsure")
-                {
-                    status = "Not Confident";
-                }
+                var eval = content[1].Trim();
                 evaluations.Add(q_id, eval);
             }
 

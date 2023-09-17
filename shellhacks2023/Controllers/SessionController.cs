@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using shellhacks2023.Data;
+using shellhacks2023.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace shellhacks2023.Controllers
@@ -38,6 +39,27 @@ namespace shellhacks2023.Controllers
                 return NotFound(nameof(sessionId));
             }
             return Ok(answers);
+        }
+
+        [HttpPost]
+        [Route("UpdateSessionFeedback")]
+        public async Task<ActionResult<Session>> UpdateSessionFeedback([FromBody] UpdateSessionRequest requestData)
+        {
+            var ans_list = new List<Answer>();
+            foreach (var answerF in requestData.AnswerFeedback)
+            {
+                var db_answer = await db.Answers.FirstOrDefaultAsync(a => a.Id == answerF.Key);
+                if(db_answer != null)
+                {
+                    db_answer.Feedback = answerF.Value; 
+                    db.Update(db_answer);
+                    await db.SaveChangesAsync();
+
+                    ans_list.Add(db_answer);
+                }
+
+            }
+            return Ok(ans_list);
         }
     }
 }
