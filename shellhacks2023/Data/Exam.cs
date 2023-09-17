@@ -13,10 +13,10 @@ namespace shellhacks2023.Data
         public string Title { get; set; } = default!;
 
         public User Owner { get; set; } = default!;
-        [ForeignKey(nameof(User))]
+        [ForeignKey(nameof(Owner))]
         public Guid OwnerId { get; set; }
 
-        /*public List<Question> Questions { get; set; } = default!;*/
+        public List<Question> Questions { get; set; } = default!;
         public List<string> Topics { get; set; } = default!;
     }
 }
