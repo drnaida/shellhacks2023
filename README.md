@@ -3,6 +3,8 @@
 Project to revolutionize educational examinations. 📝 😄
 
 Take a look: [LIVE APP](https://quizwhizai.netlify.app/) 🔗
+[DevPost Posting](https://devpost.com/software/quizwhiz-ai) 🔗
+[YouTube DEMO](https://www.youtube.com/watch?v=OfHvW5W0NLI) 🔗
 
 ## Technologies
 
